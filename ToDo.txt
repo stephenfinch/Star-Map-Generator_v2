@@ -1,0 +1,34 @@
+>>> main.py <<<
+---
+
+>>> map.py <<<
+---handles starfield instances
+---imports star.py, constellation.py
+
+>>> star.py <<<
+---Star atributes / functions
+---smart sizes
+---no stars on the edge (bigger buffer)
+
+>>> constellation.py <<<
+---handles constellation
+
+
+
+
+
+
+Things we want to add:
+  -Options for users
+    Star count
+    Starfield color
+    Background color
+    Star colors
+    -Main constellation
+      Text
+      Location
+      Rotation
+      Curvature
+      Star colors
+    Extra constellations
+    Starfield size
