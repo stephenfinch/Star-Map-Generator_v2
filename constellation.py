@@ -1,6 +1,6 @@
 class Constellation():
 
-    def __init__(self, size, center):
+    def __init__(self, type, size, center, settings):
         self.size = size
         self.center = center
         self.points = [] #list of Star objects

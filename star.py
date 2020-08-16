@@ -12,7 +12,6 @@ class Star:
         self.size = int(math.floor(random.random() ** ex * star_max_size))
         if self.size == 1:
             self.size = 0
-        #find better way of getting color data from settings
         
         self.color = settings.star_color
         self.amp = random.randint(self.size+1, star_max_size)/star_max_size

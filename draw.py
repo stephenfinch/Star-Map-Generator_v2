@@ -1,4 +1,5 @@
 from star_map import Map
+from interface import *
 import pygame
 from pygame import Surface
 from pygame.locals import *
@@ -31,6 +32,16 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 NEWBLUE = (43, 67, 244)
 
+Button_List = [Button(name="reset", text="Generate", text_active="Generating", color=(127, 127, 127), area=((0, 0), (200, 75)), size=(200, 75), border_size=4)]
+
+def define_interactions():
+    temp_list = []
+    entry = 0
+    for button in Button_List:
+        temp_list.append(("Button", button.area, button.name, entry))
+        entry += 1
+    return temp_list
+
 def draw_outline():
     pygame.draw.circle(STARFIELDSURF, NIGHTSKY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 0)
     pygame.draw.circle(STARFIELDSURF, GRAY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 1)
@@ -42,21 +53,25 @@ def draw_stars():
     for star in star_map.list_of_stars:
         pygame.draw.circle(STARFIELDSURF, star.color, (star.x, star.y), star.size, 0)
 
-def draw_view():
+def initialize_view():
     DISPLAYSURF.fill(BLACK)
     STARFIELDSURF.fill(BLACK)
     OPTIONSURF.fill(WHITE)
     draw_outline()
     draw_stars()
+    for button in Button_List:
+        button.draw(OPTIONSURF)
+
+
+def draw_view():
     DISPLAYSURF.blit(STARFIELDSURF, field_point)
     DISPLAYSURF.blit(OPTIONSURF, (0, 0))
 
 
-'''
-    def draw_constellations(self):
-        for constellation in self.star_map.list_of_constellations:
-            for line in constellation.lines:
-                pygame.draw.aalines(surface, color, line)
-            for point in constellation.points:
-                pygame.draw.circle(STARFIELDSURF, point.color, (point.x, point.y), 3, 0)
-'''
+
+def draw_constellations(self, settings):
+    for constellation in self.star_map.list_of_constellations:
+        for line in constellation.lines:
+            pygame.draw.aalines(surface, color, line)
+        for point in constellation.points:
+            pygame.draw.circle(STARFIELDSURF, point.color, (point.x, point.y), 3, 0)
