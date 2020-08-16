@@ -1,10 +1,11 @@
-from settings import * 
+from settings import *
+import math, random
 
 star_max_size = 3
 ex = 30 #the bigger the number the less large stars
 
 class Star:
-    def __init__(self, x, y):
+    def __init__(self, x, y, settings):
         self.x = x
         self.y = y
         self.location = (x,y)
@@ -12,6 +13,7 @@ class Star:
         if self.size == 1:
             self.size = 0
         #find better way of getting color data from settings
-        self.color = (43, 67, 244)
-        #self.amp = random.randint(self.size+1, star_max_size)/star_max_size
-        #self.color = [self.color[0]*self.amp, self.color[1]*self.amp, self.color[2]*self.amp]
+        
+        self.color = settings.star_color
+        self.amp = random.randint(self.size+1, star_max_size)/star_max_size
+        self.color = [self.color[0]*self.amp, self.color[1]*self.amp, self.color[2]*self.amp]

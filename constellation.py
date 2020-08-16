@@ -1,9 +1,11 @@
-class Constellation(Star):
+class Constellation():
 
     def __init__(self, size, center):
         self.size = size
         self.center = center
-        self.points = []
+        self.points = [] #list of Star objects
+        self.lines = [] #list with each item being a line -- a line is a pair of points
+    
     
     def draw(self):
         temp_min_value = 50 #place holder -- need to relook at this logic
