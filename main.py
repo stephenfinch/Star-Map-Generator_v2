@@ -46,10 +46,8 @@ while True:
     for textbox in textbox_list:
         if textbox.active:
             if textbox.text_object.update(events):
+                textbox.text_object.update([pygame.event.Event(KEYUP, key=13)])
                 textbox.active = False
-                print(pygame.event.get())
-                pygame.event.clear()
-                print(pygame.event.get())
             display_changed = True
     if display_changed:
         initialize_view(settings_data)
