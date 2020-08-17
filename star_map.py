@@ -12,7 +12,7 @@ class Map:
         self.field_y = field_y
         
         self.field_buffer = 50 #gap between display edge and circle
-        self.field_inner_buffer = 4 #gap between circle and outer stars, bigger number --> bigger gap
+        self.field_inner_buffer = 5 #gap between circle and outer stars, bigger number --> bigger gap
         self.r = self.field_x / 2 - self.field_inner_buffer #raduis
         self.Xcenter = self.Ycenter = self.field_x / 2 + self.field_buffer
 
@@ -47,7 +47,7 @@ class Map:
 
 
 LETTER_CONSTELLATIONS = {
-    'A':[], #'A':([3,12,14,21,25],[(3,12),(3,14),(12,14),(12,21),(14,25)])
+    'A':([3,12,14,21,25],[(3,12),(3,14),(12,14),(12,21),(14,25)]),
     'B':[], #'B':([1,3,9,11,13,19,21,23],[])
     'C':[], #'C':([2,4,6,16,22,24],[])
     'D':[], #'D':([1,3,9,19,21,23],[])

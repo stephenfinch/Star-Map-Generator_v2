@@ -20,15 +20,12 @@
 
 Things we want to add:
   -Options for users
-    Star count
     Starfield color
     Background color
     Star colors
     -Main constellation
       Text
       Location
-      Rotation
-      Curvature
       Star colors
     Extra constellations
-    Starfield size
+

@@ -1,40 +1,78 @@
 import pygame, sys
 from settings import *
 from draw import *
+from backend import *
 from pygame.locals import *
+
 
 settings_data = Settings()
 make_stars(settings_data)
 click_areas = define_interactions()
 
+clock = pygame.time.Clock()
 display_changed = True
+textbox_clicked = False
 click_action = ("", 0)
-initialize_view()
+action_list = []
 while True:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
         if event.type == MOUSEBUTTONUP:
-            click_active = False
             if click_action[0] == "Button":
-                Button_List[click_action[1]].active = False
+                button_list[click_action[1]].active = False
                 click_action = ("", 0)
-            if not display_changed:
-                initialize_view()
                 display_changed = True
         if event.type == MOUSEBUTTONDOWN:
             mouse = pygame.mouse.get_pos()
             for entry in click_areas:
-                if entry[1][0][0] <= mouse[0] <=entry[1][1][0] and entry[1][0][1] <= mouse[1] <=entry[1][1][1]:
+                if entry[1][0][0] <= mouse[0] <= entry[1][1][0] + entry[1][0][0] and entry[1][0][1] <= mouse[1] <= entry[1][1][1] + entry[1][0][1]:
                     if entry[0] == "Button":
-                        Button_List[entry[3]].active = True
-                        click_active = True
+                        button_list[entry[3]].active = True
                         click_action = ("Button", entry[3])
-                    if not display_changed:
-                        initialize_view()
+                        action_list.append(entry[2])
                         display_changed = True
+                    if entry[0] == "Textbox":
+                        textbox_list[entry[3]].active = True
+                        display_changed = True
+                        textbox_clicked = True
+            if not textbox_clicked:
+                for textbox in textbox_list:
+                    textbox.active = False
+            else:
+                textbox_clicked = False
+    for textbox in textbox_list:
+        if textbox.active:
+            if textbox.text_object.update(events):
+                textbox.active = False
+                print(pygame.event.get())
+                pygame.event.clear()
+                print(pygame.event.get())
+            display_changed = True
     if display_changed:
+        initialize_view(settings_data)
+        for action in action_list:
+            perform_action(action, settings_data)
+        action_list = []
         display_changed = False
         draw_view()
     pygame.display.update()
+    clock.tick(25)
+
+
+
+
+
+
+
+
+
+
+### REVIEWS
+# From: Emma,
+# 13/10
+# 5 stars on yelp
+# THE YEET CONSTELLATION
+# i change my review; 16/10
