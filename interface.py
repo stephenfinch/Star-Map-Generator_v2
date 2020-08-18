@@ -41,10 +41,66 @@ class Button:
         int(math.ceil((new_area[0][1] + new_area[1][1] - text_surf.get_height()) / 2))))
 
 class Slider:
-    def __init__(self, name, min_value, max_value, increment = 1):
+    def __init__(self, action="", min_value=0, max_value=255, increment = 1, border_size = 1,\
+        border_color = (0, 0, 0), background_color = (255, 255, 255),\
+        area = ((0, 0), (0, 0)), slider_rail = ((0, 0), (0, 0)), rail_color = (50, 50, 50),\
+        slider_size = (0, 0), slider_color = (127, 0, 0), is_vertical = False):
         self.min_value = min_value
         self.max_value = max_value
         self.increment = increment
+        self.action = action
+        self.increment = increment
+        self.border_size = border_size
+        self.border_color = border_color
+        self.background_color = background_color
+        self.area = area
+        self.slider_rail = slider_rail
+        self.rail_color = rail_color
+        self.slider_size = slider_size
+        self.slider_color = slider_color
+        self.is_vertical = is_vertical
+        self.value = min_value
+        '''
+        if is_vertical:
+            self.slide_area = (((slider_rail[0][0] + slider_rail[1][0] - slider_size[0]) / 2,slider_rail[0][1] - (slider_size[1]) / 2),\
+                (slider_size[0],slider_size[1] + slider_rail[1][1])
+                )
+        else:
+            self.slide_area = ((slider_rail[0][0] - (slider_size[0]) / 2,(slider_rail[0][1] + slider_rail[1][1] - slider_size[1]) / 2),\
+                (slider_size[0] + slider_rail[1][0], slider_size[1])
+                )
+        '''
+        self.slide_area = area
+
+    def slide(self, mouse):
+        if self.is_vertical:
+            entry = 1
+        else:
+            entry = 0
+        smin = self.slider_rail[0][entry]
+        smax = smin + self.slider_rail[1][entry]
+        pos = mouse[entry]
+        if pos < smin:
+            pos = smin
+        if pos > smax:
+            pos = smax
+        p = (pos - smin) / (smax - smin)
+        self.value = int(math.floor(self.min_value + p * (self.max_value - self.min_value)))
+        print(self.value)
+
+    def draw(self, main_surface):
+        pygame.draw.rect(main_surface, self.border_color, self.area)
+        new_area = ((self.area[0][0] + self.border_size, self.area[0][1] + self.border_size),\
+        (self.area[1][0] - (2*self.border_size), self.area[1][1] - (2*self.border_size)))
+        pygame.draw.rect(main_surface, self.background_color, new_area)
+        pygame.draw.rect(main_surface, self.rail_color, self.slider_rail)
+        p = (self.value - self.min_value) / (self.max_value - self.min_value)
+        if self.is_vertical:
+            pos = ((((self.slider_rail[0][0] + self.slider_rail[1][0]) / 2), self.slider_rail[0][1] - (self.slider_size[1] / 2) + (self.slider_rail[1][1] * p)), self.slider_size)
+        else:
+            pos = ((self.slider_rail[0][0] - (self.slider_size[0] / 2) + (self.slider_rail[1][0] * p), (self.slider_rail[0][1] + self.slider_rail[1][1]) / 2), self.slider_size)
+        pygame.draw.rect(main_surface, self.slider_color, pos)
+
 
 
 class Textbox:

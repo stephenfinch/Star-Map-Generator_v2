@@ -43,6 +43,7 @@ button_list = [
     #push position right
 ]
 #sliders --> [R,G,B,number_of_constellations,text_size]
+'''
 slider_list = [
     Slider('R', 0, 255, 1),
     Slider('G', 0, 255, 1),
@@ -50,15 +51,15 @@ slider_list = [
     Slider('Constellations', 0, 100, 1),
     Slider('Text Size', 1, 10, 1)
 ]
+'''
+slider_list = [
+    Slider(action="R", area = ((10, 400), (50, 300)), slider_rail=((20, 410), (20, 256)), is_vertical=True, slider_size=(20,10))
+]
+
 #text boxes --> [num of stars, constellation text]
 textbox_list = [
     Textbox(action="textString", area=((0, 80), (200, 75)), border_size=2, spacing=1, max_length=15)
 ]
-'''
-max_length = -1, numbers_only = False, english_only = False, action = "",\
-        display_text_color = (0, 0, 0), border_size = 1, border_color = (0, 0, 0),\
-        color = (255, 255, 255), area = ((0, 0), (0, 0)), size = (0, 0), spacing = 0
-'''
 
 
 def define_interactions():
@@ -70,6 +71,10 @@ def define_interactions():
     entry = 0
     for textbox in textbox_list:
         temp_list.append(("Textbox", textbox.area, textbox.action, entry))
+        entry += 1
+    entry = 0
+    for slider in slider_list:
+        temp_list.append(("Slider", slider.slide_area, slider.action, entry))
         entry += 1
     return temp_list
 
@@ -93,7 +98,7 @@ def make_stars(settings):
 
 def draw_stars():
     for star in star_map.list_of_stars:
-        pygame.draw.circle(STARFIELDSURF, star.color, (star.x, star.y), star.size, 0)
+        star.draw(STARFIELDSURF)
 
 def initialize_view(settings):
     DISPLAYSURF.fill(BLACK)
@@ -101,10 +106,13 @@ def initialize_view(settings):
     OPTIONSURF.fill(WHITE)
     draw_outline(settings)
     draw_stars()
+    draw_constellations(settings)
     for button in button_list:
         button.draw(OPTIONSURF)
     for textbox in textbox_list:
         textbox.draw(OPTIONSURF)
+    for slider in slider_list:
+        slider.draw(OPTIONSURF)
 
 
 
@@ -113,10 +121,8 @@ def draw_view():
     DISPLAYSURF.blit(OPTIONSURF, (0, 0))
 
 
-
-def draw_constellations(self, settings):
-    for constellation in self.star_map.list_of_constellations:
-        for line in constellation.lines:
-            pygame.draw.aalines(surface, color, line)
-        for point in constellation.points:
-            pygame.draw.circle(STARFIELDSURF, point.color, (point.x, point.y), 3, 0)
+### Constellation objects have a .draw() method that can be used to draw them
+def draw_constellations(settings):
+    star_map.place_constellations(100, settings)
+    for constellation in star_map.list_of_constellations:
+        constellation.draw(STARFIELDSURF, settings)

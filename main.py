@@ -25,6 +25,10 @@ while True:
                 button_list[click_action[1]].active = False
                 click_action = ("", 0)
                 display_changed = True
+            if click_action[0] == "Slider":
+                slider_list[click_action[1]].active = False
+                click_action = ("", 0)
+                display_changed = True
         if event.type == MOUSEBUTTONDOWN:
             mouse = pygame.mouse.get_pos()
             for entry in click_areas:
@@ -38,11 +42,19 @@ while True:
                         textbox_list[entry[3]].active = True
                         display_changed = True
                         textbox_clicked = True
+                    if entry[0] == "Slider":
+                        slider_list[entry[3]].active = True
+                        display_changed = True
+                        click_action = ("Slider", entry[3])
+                        slider_list[entry[3]].slide(event.pos)
             if not textbox_clicked:
                 for textbox in textbox_list:
                     textbox.active = False
             else:
                 textbox_clicked = False
+        if click_action[0] == "Slider" and event.type == MOUSEMOTION:
+            slider_list[click_action[1]].slide(event.pos)
+            display_changed = True
     for textbox in textbox_list:
         if textbox.active:
             if textbox.text_object.update(events):
@@ -58,10 +70,6 @@ while True:
         draw_view()
     pygame.display.update()
     clock.tick(25)
-
-
-
-
 
 
 
