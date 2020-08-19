@@ -38,7 +38,7 @@ class Map:
         self.constellation_size = constellation_size
         self.list_of_constellations = []
         for x in range(settings.number_of_constellations):
-            self.list_of_constellations.append(Constellation(1, 10, (0,0), settings))
+            self.list_of_constellations.append(Constellation(1, 10, (200,300), settings))
         if settings.text_input:
             temp_letter_constellation = Constellation(1, 50, (200,200), settings)
             
@@ -56,7 +56,7 @@ class Map:
 
 LETTER_CONSTELLATIONS = {
     'A':([3,12,14,21,25],[(3,12),(3,14),(12,14),(12,21),(14,25)]),
-    'B':([1,3,9,11,13,19,21,23],[]),
+    'B':([1,3,9,11,13,19,21,23],[(1,3),(1,21),(21,23),(11,13),(3,9),(9,13),(13,19),(19,23)]),
     'C':([2,4,6,16,22,24],[]),
     'D':([1,3,9,19,21,23],[]),
     'E':([2,4,12,14,22,24],[]),

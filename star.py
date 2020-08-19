@@ -18,6 +18,6 @@ class Star:
         self.amp = random.randint(self.size + 1, star_max_size + 1)/(star_max_size + 1)
         self.color = [self.color[0]*self.amp, self.color[1]*self.amp, self.color[2]*self.amp]
 
-    ### draw the star with the pygame draw method
+    ### This function can draw the star using its own data (self)
     def draw(self, main_surface):
         pygame.draw.circle(main_surface, self.color, (self.x, self.y), self.size, 0)

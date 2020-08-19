@@ -40,6 +40,13 @@ class Button:
         main_surface.blit(text_surf, (int(math.ceil((new_area[0][0] + new_area[1][0] - text_surf.get_width()) / 2)),\
         int(math.ceil((new_area[0][1] + new_area[1][1] - text_surf.get_height()) / 2))))
 
+
+
+class Toggle(Button):
+    def draw(self, main_surface):
+        pass
+
+
 class Slider:
     def __init__(self, action="", min_value=0, max_value=255, increment = 1, border_size = 1,\
         border_color = (0, 0, 0), background_color = (255, 255, 255),\
@@ -86,7 +93,6 @@ class Slider:
             pos = smax
         p = (pos - smin) / (smax - smin)
         self.value = int(math.floor(self.min_value + p * (self.max_value - self.min_value)))
-        print(self.value)
 
     def draw(self, main_surface):
         pygame.draw.rect(main_surface, self.border_color, self.area)

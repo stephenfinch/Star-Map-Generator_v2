@@ -9,7 +9,6 @@ import math
 # ---list_of_stars -- list of star (x,y) points
 # ---list_of_constellations -- list_of_lines -- pairs of points
 
-
 field_x, field_y = 650, 650
 options_width = 200
 field_buffer = 50
@@ -20,7 +19,9 @@ STARFIELDSURF = Surface((field_x + (2 * field_buffer), field_y + (2 * field_buff
 STARFIELDSURF_HOLD = STARFIELDSURF.copy()                                                                   #Holdover
 OPTIONSURF = Surface((screen_x - field_x - 2 * field_buffer, screen_y))                                     #Option Bar
 OPTIONSURF_HOLD = OPTIONSURF.copy()
+SETTINGSURF = Surface((screen_x, screen_y))
 star_map = Map(field_x, field_y)
+settings_show = False
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -61,7 +62,6 @@ textbox_list = [
     Textbox(action="textString", area=((0, 80), (200, 75)), border_size=2, spacing=1, max_length=15)
 ]
 
-
 def define_interactions():
     temp_list = []
     entry = 0
@@ -81,7 +81,6 @@ def define_interactions():
 def draw_outline(settings):
     pygame.draw.circle(STARFIELDSURF, NIGHTSKY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 0)
     pygame.draw.circle(STARFIELDSURF, GRAY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 1)
-
     if settings.show_grid:
         circle_count = 8
         line_count = 12
@@ -100,26 +99,35 @@ def draw_stars():
     for star in star_map.list_of_stars:
         star.draw(STARFIELDSURF)
 
+def swap_settings():
+    global settings_show
+    settings_show = not settings_show
+
 def initialize_view(settings):
+    #settings_show = False
     DISPLAYSURF.fill(BLACK)
-    STARFIELDSURF.fill(BLACK)
-    OPTIONSURF.fill(WHITE)
-    draw_outline(settings)
-    draw_stars()
-    draw_constellations(settings)
-    for button in button_list:
-        button.draw(OPTIONSURF)
-    for textbox in textbox_list:
-        textbox.draw(OPTIONSURF)
-    for slider in slider_list:
-        slider.draw(OPTIONSURF)
-
-
+    if settings_show:
+        SETTINGSURF.fill(WHITE)
+        #Run settings code
+    else:
+        STARFIELDSURF.fill(BLACK)
+        OPTIONSURF.fill(WHITE)
+        draw_outline(settings)
+        draw_stars()
+        draw_constellations(settings)
+        for button in button_list:
+            button.draw(OPTIONSURF)
+        for textbox in textbox_list:
+            textbox.draw(OPTIONSURF)
+        for slider in slider_list:
+            slider.draw(OPTIONSURF)
 
 def draw_view():
-    DISPLAYSURF.blit(STARFIELDSURF, field_point)
-    DISPLAYSURF.blit(OPTIONSURF, (0, 0))
-
+    if settings_show:
+        DISPLAYSURF.blit(SETTINGSURF, (0, 0))
+    else:
+        DISPLAYSURF.blit(STARFIELDSURF, field_point)
+        DISPLAYSURF.blit(OPTIONSURF, (0, 0))
 
 ### Constellation objects have a .draw() method that can be used to draw them
 def draw_constellations(settings):

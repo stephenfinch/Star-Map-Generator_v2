@@ -4,11 +4,9 @@ from draw import *
 from backend import *
 from pygame.locals import *
 
-
 settings_data = Settings()
 make_stars(settings_data)
 click_areas = define_interactions()
-
 clock = pygame.time.Clock()
 display_changed = True
 textbox_clicked = False
@@ -47,6 +45,9 @@ while True:
                         display_changed = True
                         click_action = ("Slider", entry[3])
                         slider_list[entry[3]].slide(event.pos)
+                else:
+                    swap_settings()
+                    display_changed = True
             if not textbox_clicked:
                 for textbox in textbox_list:
                     textbox.active = False
@@ -68,6 +69,7 @@ while True:
         action_list = []
         display_changed = False
         draw_view()
+    
     pygame.display.update()
     clock.tick(25)
 
