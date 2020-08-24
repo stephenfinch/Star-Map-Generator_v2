@@ -2,7 +2,7 @@ class Settings:
     def __init__(self):
 
         #Main display
-        self.text_input = "NP"                    #text box (maybe add numbers later)
+        self.text_input = "Welcome"             #text box (maybe add numbers later)
         self.text_size = 1                      #slider
         self.text_height_offset = 0             #four buttons (arrows -- move the center)
 

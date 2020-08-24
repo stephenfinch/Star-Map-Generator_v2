@@ -40,10 +40,12 @@ class Constellation():
         def grid_to_star_lines():
             for list_of_lines in self.grid_lines:
                 for pair in list_of_lines:
+                    '''
                     tempx1 = (pair[0] - 1) % 5
                     tempy1 = (pair[0] - tempx1 - 1) // 5
                     tempx2 = (pair[1] - 1) % 5
                     tempy2 = (pair[1] - tempx2 - 1) // 5
+                    '''
                     offsetX1 = self.point_dict[pair[0]][0]
                     offsetY1 = self.point_dict[pair[0]][1]
                     offsetX2 = self.point_dict[pair[1]][0]

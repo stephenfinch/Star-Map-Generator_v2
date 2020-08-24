@@ -3,6 +3,19 @@ from pygame_textinput import TextInput
 
 pygame.init()
 
+class Label:
+    def __init__(self, text = "", text_color = (0, 0, 0), background_color = (255, 255, 255), font_size = 25, pos = (0, 0)):
+        self.text = text
+        self.text_color = text_color
+        self.font = pygame.font.SysFont('Times New Roman', font_size)
+        self.pos = pos
+        self.background_color = background_color
+
+    def draw(self, main_surface):
+        text_surf = self.font.render(self.text, True, self.text_color, self.background_color)
+        main_surface.blit(text_surf, self.pos)
+
+
 class Button:
     def __init__(self, action = "", font_size = 32, bold_on_active = False,\
         display_text_color = (0, 0, 0), text = "",\
@@ -37,8 +50,9 @@ class Button:
         else:
             pygame.draw.rect(main_surface, self.color, new_area)
             text_surf = self.font.render(self.text, True, self.display_text_color, self.color)
-        main_surface.blit(text_surf, (int(math.ceil((new_area[0][0] + new_area[1][0] - text_surf.get_width()) / 2)),\
-        int(math.ceil((new_area[0][1] + new_area[1][1] - text_surf.get_height()) / 2))))
+        new_area2 = (new_area[0][0] + (new_area[1][0] - text_surf.get_width()) // 2,\
+        new_area[0][1] + (new_area[1][1] - text_surf.get_height()) // 2)
+        main_surface.blit(text_surf, new_area2)
 
 
 
@@ -51,7 +65,8 @@ class Slider:
     def __init__(self, action="", min_value=0, max_value=255, increment = 1, border_size = 1,\
         border_color = (0, 0, 0), background_color = (255, 255, 255),\
         area = ((0, 0), (0, 0)), slider_rail = ((0, 0), (0, 0)), rail_color = (50, 50, 50),\
-        slider_size = (0, 0), slider_color = (127, 0, 0), is_vertical = False):
+        slider_size = (0, 0), slider_color = (0, 0, 0), is_vertical = False,\
+        label_position = (0, 0), label_color = (255, 255, 255)):
         self.min_value = min_value
         self.max_value = max_value
         self.increment = increment
@@ -78,6 +93,7 @@ class Slider:
                 )
         '''
         self.slide_area = area
+        self.label = Label(text = str(self.value), pos = label_position, background_color = self.background_color, text_color=label_color)
 
     def slide(self, mouse):
         if self.is_vertical:
@@ -93,6 +109,7 @@ class Slider:
             pos = smax
         p = (pos - smin) / (smax - smin)
         self.value = int(math.floor(self.min_value + p * (self.max_value - self.min_value)))
+        self.label.text = str(self.value)
 
     def draw(self, main_surface):
         pygame.draw.rect(main_surface, self.border_color, self.area)
@@ -106,6 +123,7 @@ class Slider:
         else:
             pos = ((self.slider_rail[0][0] - (self.slider_size[0] / 2) + (self.slider_rail[1][0] * p), (self.slider_rail[0][1] + self.slider_rail[1][1]) / 2), self.slider_size)
         pygame.draw.rect(main_surface, self.slider_color, pos)
+        self.label.draw(main_surface)
 
 
 

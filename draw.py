@@ -22,6 +22,7 @@ OPTIONSURF_HOLD = OPTIONSURF.copy()
 SETTINGSURF = Surface((screen_x, screen_y))
 star_map = Map(field_x, field_y)
 settings_show = False
+input_dict = {}
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -35,14 +36,20 @@ NEWBLUE = (43, 67, 244)
 NEWESTBLUE = (153, 230, 255) #gucci
 
 #buttons --> [4x text position, show constellations, generate]
-button_list = [
-    Button(action="reset", text="Generate", text_active="Generating", color=(127, 127, 127), area=((0, 0), (200, 75)), border_size=2)
+main_button_list = [
+    Button(action="reset", text="Generate", text_active="Generating", color=(127, 127, 127), area=((1, 1), (198, 75)), border_size=2),
     #show constellations
     #push position up
     #push position down
     #push position left
     #push position right
+    Button(action="settings", text="Settings", color=(127, 127, 127), area=((1, 161), (198, 75)), border_size=2)
 ]
+
+settings_button_list = [
+    Button(action="settings", text="Settings", color=(127, 127, 127), area=((1, 161), (198, 75)), border_size=2)
+]
+
 #sliders --> [R,G,B,number_of_constellations,text_size]
 '''
 slider_list = [
@@ -53,29 +60,69 @@ slider_list = [
     Slider('Text Size', 1, 10, 1)
 ]
 '''
-slider_list = [
-    Slider(action="R", area = ((10, 400), (50, 300)), slider_rail=((20, 410), (20, 256)), is_vertical=True, slider_size=(20,10))
+main_slider_list = [
+
+]
+
+settings_slider_list = [
+    Slider(action="R", area = ((10, 400), (50, 315)), slider_rail=((20, 445), (20, 256)), is_vertical=True, slider_size=(20,10), slider_color=(127, 0, 0), label_position=(18, 410), label_color=(127, 0, 0))
 ]
 
 #text boxes --> [num of stars, constellation text]
-textbox_list = [
-    Textbox(action="textString", area=((0, 80), (200, 75)), border_size=2, spacing=1, max_length=15)
+main_textbox_list = [
+    Textbox(action="textString", area=((1, 130), (198, 25)), border_size=2, spacing=1, max_length=15)
 ]
 
-def define_interactions():
+settings_textbox_list = [
+
+]
+
+main_label_list = [
+    Label(text = "Input string:", font_size = 32, pos = (25, 90))
+]
+
+settings_label_list = [
+
+]
+
+def define_main_interactions():
     temp_list = []
+    temp_dict = {}
     entry = 0
-    for button in button_list:
+    for button in main_button_list:
         temp_list.append(("Button", button.area, button.action, entry))
         entry += 1
     entry = 0
-    for textbox in textbox_list:
+    for textbox in main_textbox_list:
         temp_list.append(("Textbox", textbox.area, textbox.action, entry))
+        temp_dict.update({textbox.action:("mTextbox", entry)})
         entry += 1
     entry = 0
-    for slider in slider_list:
+    for slider in main_slider_list:
         temp_list.append(("Slider", slider.slide_area, slider.action, entry))
+        temp_dict.update({slider.action:("mSlider", entry)})
         entry += 1
+    input_dict.update(temp_dict)
+    return temp_list
+
+def define_settings_interactions():
+    temp_list = []
+    temp_dict = {}
+    entry = 0
+    for button in settings_button_list:
+        temp_list.append(("Button", button.area, button.action, entry))
+        entry += 1
+    entry = 0
+    for textbox in settings_textbox_list:
+        temp_list.append(("Textbox", textbox.area, textbox.action, entry))
+        temp_dict.update({textbox.action:("sTextbox", entry)})
+        entry += 1
+    entry = 0
+    for slider in settings_slider_list:
+        temp_list.append(("Slider", slider.slide_area, slider.action, entry))
+        temp_dict.update({slider.action:("sSlider", entry)})
+        entry += 1
+    input_dict.update(temp_dict)
     return temp_list
 
 def draw_outline(settings):
@@ -104,13 +151,38 @@ def swap_settings():
     global settings_show
     settings_show = not settings_show
 
+def query_settings():
+    global settings_show
+    return settings_show
+
+def query_input(var):
+    global input_dict
+    control = input_dict[var]
+    if control[0] == "mTextbox":
+        return main_textbox_list[control[1]].text_object.input_string
+
+def set_input(var, new_value):
+    global input_dict
+    control = input_dict[var]
+    if control[0] == "mTextbox":
+        main_textbox_list[control[1]].text_object.input_string = new_value
+        main_textbox_list[control[1]].text_object.cursor_position = len(new_value)
+        main_textbox_list[control[1]].text_object.update([])
+
 def initialize_view(new_starfield, settings):
     #settings_show = False
     global STARFIELDSURF, STARFIELDSURF_HOLD
     DISPLAYSURF.fill(BLACK)
     if settings_show:
         SETTINGSURF.fill(WHITE)
-        #Run settings code
+        for button in settings_button_list:
+            button.draw(SETTINGSURF)
+        for textbox in settings_textbox_list:
+            textbox.draw(SETTINGSURF)
+        for slider in settings_slider_list:
+            slider.draw(SETTINGSURF)
+        for label in settings_label_list:
+            label.draw(SETTINGSURF)
     else:
         if new_starfield:
             STARFIELDSURF.fill(BLACK)
@@ -121,15 +193,17 @@ def initialize_view(new_starfield, settings):
         else:
             STARFIELDSURF = STARFIELDSURF_HOLD.copy()
         OPTIONSURF.fill(WHITE)
-        for button in button_list:
+        for button in main_button_list:
             button.draw(OPTIONSURF)
-        for textbox in textbox_list:
+        for textbox in main_textbox_list:
             textbox.draw(OPTIONSURF)
-        for slider in slider_list:
+        for slider in main_slider_list:
             slider.draw(OPTIONSURF)
+        for label in main_label_list:
+            label.draw(OPTIONSURF)
 
 def draw_view():
-    if False: #settings_show:
+    if settings_show:
         DISPLAYSURF.blit(SETTINGSURF, (0, 0))
     else:
         DISPLAYSURF.blit(STARFIELDSURF, field_point)

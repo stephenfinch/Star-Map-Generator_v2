@@ -47,7 +47,7 @@ class Map:
                 temp_letter_constellation = Constellation(self.constellation_size, (200,200), settings)
                 temp_letter_constellation.grid_points.append(LETTER_CONSTELLATIONS.get(char)[0])
                 temp_letter_constellation.grid_lines.append(LETTER_CONSTELLATIONS.get(char)[1])
-                centerX = (string_length - 1) * (self.constellation_size + self.letter_spacing) * (string_index - 1) + self.Xcenter
+                centerX = (self.constellation_size + self.letter_spacing) * (string_index - (string_length - 1) / 2) + self.Xcenter
                 centerY = 220 - settings.text_height_offset
                 temp_letter_constellation.center = (centerX, centerY)
                 string_index += 1
