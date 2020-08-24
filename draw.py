@@ -131,6 +131,6 @@ def draw_view():
 
 ### Constellation objects have a .draw() method that can be used to draw them
 def draw_constellations(settings):
-    star_map.place_constellations(100, settings)
+    star_map.place_constellations(50, settings)
     for constellation in star_map.list_of_constellations:
         constellation.draw(STARFIELDSURF, settings)

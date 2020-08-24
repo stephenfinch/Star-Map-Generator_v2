@@ -35,23 +35,32 @@ class Map:
 
 ## CONSTELLATIONS ## makes constellation objects and edits their center/size to fit them where they need to go
     def place_constellations(self, constellation_size, settings):
-        self.constellation_size = constellation_size
+        self.constellation_size = constellation_size #side length of the 5x5 grid
         self.list_of_constellations = []
-        for x in range(settings.number_of_constellations):
-            self.list_of_constellations.append(Constellation(1, 10, (200,300), settings))
         if settings.text_input:
-            temp_letter_constellation = Constellation(1, 50, (200,200), settings)
             
             ### adds the point/line data for that letter to the list of constellations
+            string_length = len(settings.text_input.upper())
+            string_index = 0
+            self.letter_spacing = 4
             for char in settings.text_input.upper():
-                temp_letter_constellation.points.append(LETTER_CONSTELLATIONS.get(char)[0])
-                temp_letter_constellation.lines.append(LETTER_CONSTELLATIONS.get(char)[1])
+                temp_letter_constellation = Constellation(self.constellation_size, (200,200), settings)
+                temp_letter_constellation.grid_points.append(LETTER_CONSTELLATIONS.get(char)[0])
+                temp_letter_constellation.grid_lines.append(LETTER_CONSTELLATIONS.get(char)[1])
+                centerX = (string_length - 1) * (self.constellation_size + self.letter_spacing) * (string_index - 0.5) + self.Xcenter
+                centerY = 220
+                temp_letter_constellation.center = (centerX, centerY)
+                string_index += 1
             self.list_of_constellations.append(temp_letter_constellation)
                 
         
         # do something else for this part
         for i in range(settings.number_of_constellations):
-            self.list_of_constellations.append(OTHER_CONSTELLATIONS.get(random.randint(0,9)))
+            constellation_pick = random.randint(0,9)
+            temp_other_constellation = Constellation(self.constellation_size, (i*40,i*40), settings)
+            temp_other_constellation.grid_points.append(OTHER_CONSTELLATIONS.get(constellation_pick)[0])
+            temp_other_constellation.grid_lines.append(OTHER_CONSTELLATIONS.get(constellation_pick)[1])
+            self.list_of_constellations.append(OTHER_CONSTELLATIONS.get(constellation_pick))
 
 
 LETTER_CONSTELLATIONS = {
