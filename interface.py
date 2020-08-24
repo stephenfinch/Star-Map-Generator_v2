@@ -144,5 +144,8 @@ class Textbox:
         main_surface.blit(text_surf, new_spot)
 
 class Colorbox:
-    def __init__(self):
-        pass
+    def __init__(self, border_size = 1, border_color = (0, 0, 0), color = (255, 255, 255), area = ((0, 0), (0, 0))):
+        self.border_size = border_size
+        self.border_color = border_color
+        self.color = color
+        self.area = area

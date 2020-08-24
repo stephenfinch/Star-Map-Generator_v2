@@ -95,6 +95,7 @@ def draw_outline(settings):
 def make_stars(settings):
     star_map.place_stars(settings)
 
+### Star objects have a .draw() method that can be used to draw them
 def draw_stars():
     for star in star_map.list_of_stars:
         star.draw(STARFIELDSURF)
@@ -103,18 +104,23 @@ def swap_settings():
     global settings_show
     settings_show = not settings_show
 
-def initialize_view(settings):
+def initialize_view(new_starfield, settings):
     #settings_show = False
+    global STARFIELDSURF, STARFIELDSURF_HOLD
     DISPLAYSURF.fill(BLACK)
     if settings_show:
         SETTINGSURF.fill(WHITE)
         #Run settings code
     else:
-        STARFIELDSURF.fill(BLACK)
+        if new_starfield:
+            STARFIELDSURF.fill(BLACK)
+            draw_outline(settings)
+            draw_stars()
+            draw_constellations(settings)
+            STARFIELDSURF_HOLD = STARFIELDSURF.copy()
+        else:
+            STARFIELDSURF = STARFIELDSURF_HOLD.copy()
         OPTIONSURF.fill(WHITE)
-        draw_outline(settings)
-        draw_stars()
-        draw_constellations(settings)
         for button in button_list:
             button.draw(OPTIONSURF)
         for textbox in textbox_list:
@@ -123,7 +129,7 @@ def initialize_view(settings):
             slider.draw(OPTIONSURF)
 
 def draw_view():
-    if settings_show:
+    if False: #settings_show:
         DISPLAYSURF.blit(SETTINGSURF, (0, 0))
     else:
         DISPLAYSURF.blit(STARFIELDSURF, field_point)

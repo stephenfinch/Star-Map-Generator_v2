@@ -47,25 +47,25 @@ class Map:
                 temp_letter_constellation = Constellation(self.constellation_size, (200,200), settings)
                 temp_letter_constellation.grid_points.append(LETTER_CONSTELLATIONS.get(char)[0])
                 temp_letter_constellation.grid_lines.append(LETTER_CONSTELLATIONS.get(char)[1])
-                centerX = (string_length - 1) * (self.constellation_size + self.letter_spacing) * (string_index - 0.5) + self.Xcenter
-                centerY = 220
+                centerX = (string_length - 1) * (self.constellation_size + self.letter_spacing) * (string_index - 1) + self.Xcenter
+                centerY = 220 - settings.text_height_offset
                 temp_letter_constellation.center = (centerX, centerY)
                 string_index += 1
-            self.list_of_constellations.append(temp_letter_constellation)
-                
-        
-        # do something else for this part
-        for i in range(settings.number_of_constellations):
-            constellation_pick = random.randint(0,9)
-            temp_other_constellation = Constellation(self.constellation_size, (i*40,i*40), settings)
-            temp_other_constellation.grid_points.append(OTHER_CONSTELLATIONS.get(constellation_pick)[0])
-            temp_other_constellation.grid_lines.append(OTHER_CONSTELLATIONS.get(constellation_pick)[1])
-            self.list_of_constellations.append(OTHER_CONSTELLATIONS.get(constellation_pick))
+                self.list_of_constellations.append(temp_letter_constellation)
+        else:
+            
+            # do something else for this part
+            for i in range(settings.number_of_constellations):
+                constellation_pick = random.randint(5,9)
+                temp_other_constellation = Constellation(self.constellation_size, (i*40 + self.Xcenter,i*40 + self.Ycenter), settings)
+                temp_other_constellation.grid_points.append(OTHER_CONSTELLATIONS.get(constellation_pick)[0])
+                temp_other_constellation.grid_lines.append(OTHER_CONSTELLATIONS.get(constellation_pick)[1])
+                self.list_of_constellations.append(temp_other_constellation)
 
 
 LETTER_CONSTELLATIONS = {
     'A':([3,12,14,21,25],[(3,12),(3,14),(12,14),(12,21),(14,25)]),
-    'B':([1,3,9,11,13,19,21,23],[(1,3),(1,21),(21,23),(11,13),(3,9),(9,13),(13,19),(19,23)]),
+    'B':([1,3,9,11,13,19,21,23],[(1,3),(1,11),(11,21),(21,23),(11,13),(3,9),(9,13),(13,19),(19,23)]),
     'C':([2,4,6,16,22,24],[]),
     'D':([1,3,9,19,21,23],[]),
     'E':([2,4,12,14,22,24],[]),
@@ -90,7 +90,7 @@ LETTER_CONSTELLATIONS = {
     'X':([1,4,21,24],[]),
     'Y':([2,4,13,23],[]),
     'Z':([2,4,22,24],),
-    ' ':[]
+    ' ': None
 }
 
 OTHER_CONSTELLATIONS = {

@@ -1,4 +1,5 @@
 import pygame
+import random
 from star import Star
 
 class Constellation():
@@ -11,11 +12,15 @@ class Constellation():
         self.point_spacing = self.size // 4
         self.star_points = []
         self.star_lines = []
+        self.point_dict = {}
 
     ### This function can draw the constellation using its own data (self)
     def draw(self, main_surface, settings):
 
-        #def 
+        ### This function will add some noise to the location of the stars in each constellation
+        def shift_points(input):
+            scale = 5
+            return input + random.randint(-self.point_spacing//scale, self.point_spacing//scale)
 
         ### This function will take the points on the 5x5 grid and make Star objects with proper centers and sizes for the constellation
         def grid_to_star_points():
@@ -23,13 +28,15 @@ class Constellation():
                 for point in list_of_points:
                     tempx = (point - 1) % 5
                     tempy = (point - tempx - 1) // 5
-                    offsetX = (tempx - 2) * self.point_spacing
-                    offsetY = (tempy - 2) * self.point_spacing
+                    offsetX = shift_points((tempx - 2) * self.point_spacing)
+                    offsetY = shift_points((tempy - 2) * self.point_spacing)
                     temp_star = Star(int(self.center[0] + offsetX), int(self.center[1] + offsetY), settings)
-                    temp_star.size = 3
+                    temp_star.size = 2
                     temp_star.color = settings.star_color
                     self.star_points.append(temp_star)
+                    self.point_dict.update({point:(offsetX, offsetY)})
 
+        ### rework this later!
         def grid_to_star_lines():
             for list_of_lines in self.grid_lines:
                 for pair in list_of_lines:
@@ -37,16 +44,17 @@ class Constellation():
                     tempy1 = (pair[0] - tempx1 - 1) // 5
                     tempx2 = (pair[1] - 1) % 5
                     tempy2 = (pair[1] - tempx2 - 1) // 5
-                    offsetX1 = (tempx1 - 2) * self.point_spacing
-                    offsetY1 = (tempy1 - 2) * self.point_spacing
-                    offsetX2 = (tempx2 - 2) * self.point_spacing
-                    offsetY2 = (tempy2 - 2) * self.point_spacing
+                    offsetX1 = self.point_dict[pair[0]][0]
+                    offsetY1 = self.point_dict[pair[0]][1]
+                    offsetX2 = self.point_dict[pair[1]][0]
+                    offsetY2 = self.point_dict[pair[1]][1]
                     self.star_lines.append(((self.center[0] + offsetX1, self.center[1] + offsetY1), (self.center[0] + offsetX2, self.center[1] + offsetY2)))
 
+        ### Run all the methods and draw it all
         grid_to_star_points()
         grid_to_star_lines()
         for star in self.star_points:
             pygame.draw.circle(main_surface, star.color, (star.x, star.y), star.size, 0)
-        for line in self.star_lines:
-            pygame.draw.lines(main_surface, (255, 255, 255), False, line, 1)
-
+        if settings.show_constellation_lines:
+            for line in self.star_lines:
+                pygame.draw.lines(main_surface, (255, 255, 255), False, line, 1)
