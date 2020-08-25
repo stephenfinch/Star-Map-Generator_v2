@@ -50,7 +50,9 @@ settings_button_list = [
     Button(action="settings", text="Back", color=(127, 127, 127), area=((1, 674), (198, 75)), border_size=2),
     Button(action="colorbox", text="", color=(127, 127, 127), area=((360, 10), (152, 152)), border_size=2),
     Button(action="starcolor", text="", color=(127, 127, 127), area=((850, 20), (60, 60)), border_size=2),
-    Button(action="backgroundcolor", text="", color=(127, 127, 127), area=((850, 90), (60, 60)), border_size=2)
+    Button(action="backgroundcolor", text="", color=(127, 127, 127), area=((850, 90), (60, 60)), border_size=2),
+    Button(action="showgrid", text="Show Grid", color=(127, 127, 127), area=((100, 450), (198, 75)), border_size=2),
+    Button(action="showconstellations", text="Show Constellations", color=(127, 127, 127), area=((500, 450), (300, 75)), border_size=2)
 ]
 
 
@@ -60,9 +62,10 @@ main_slider_list = [
 
 #sliders --> [R,G,B,number_of_constellations,text_size]
 settings_slider_list = [
-    Slider(action="R", area = ((10, 10), (330, 32)), slider_rail=((65, 25), (256, 2)), slider_size=(10,20), slider_color=(127, 0, 0), label_position=(15, 12), label_color=(127, 0, 0)),
-    Slider(action="G", area = ((10, 70), (330, 32)), slider_rail=((65, 85), (256, 2)), slider_size=(10,20), slider_color=(0, 127, 0), label_position=(15, 72), label_color=(0, 127, 0)),
-    Slider(action="B", area = ((10, 130), (330, 32)), slider_rail=((65, 145), (256, 2)), slider_size=(10,20), slider_color=(0, 0, 127), label_position=(15, 132), label_color=(0, 0, 127))
+    Slider(action="R", area = ((10, 10), (330, 32)), slider_rail=((65, 25), (256, 2)), slider_size=(10,20), slider_color=(200, 0, 0), label_position=(15, 12), label_color=(127, 0, 0)),
+    Slider(action="G", area = ((10, 70), (330, 32)), slider_rail=((65, 85), (256, 2)), slider_size=(10,20), slider_color=(0, 200, 0), label_position=(15, 72), label_color=(0, 127, 0)),
+    Slider(action="B", area = ((10, 130), (330, 32)), slider_rail=((65, 145), (256, 2)), slider_size=(10,20), slider_color=(0, 0, 200), label_position=(15, 132), label_color=(0, 0, 127)),
+    Slider(action="constellation_density", area = ((500, 300), (285, 32)), slider_rail=((515, 315), (256, 2)), slider_size=(10,20), slider_color=(0, 0, 0), max_value=3)
 ]
 
 #text boxes --> [num of stars, constellation text]
@@ -71,7 +74,7 @@ main_textbox_list = [
 ]
 
 settings_textbox_list = [
-    #Textbox(action="starcount", area=((50, 200), (198, 25)), border_size=2, spacing=1, max_length=15)
+    Textbox(action="starcount", area=((100, 300), (198, 25)), border_size=2, spacing=1, max_length=15)
 ]
 
 main_label_list = [
@@ -81,7 +84,8 @@ main_label_list = [
 settings_label_list = [
     Label(text = ">>>       Use for Stars       >>>", font_size = 24, pos = (530, 35)),
     Label(text = ">>> Use for Background >>>", font_size = 24, pos = (530, 105)),
-    #Label(text = "# of Stars", font_size = 24, pos = (70, 180))
+    Label(text = "Number of Stars", font_size = 24, pos = (100, 260)),
+    Label(text = "Constellation Density", font_size = 24, pos = (500, 260))
 ]
 
 def define_main_interactions():

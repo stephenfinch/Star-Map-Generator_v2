@@ -116,7 +116,7 @@ class Slider:
         if pos > smax:
             pos = smax
         p = (pos - smin) / (smax - smin)
-        self.value = int(math.floor(self.min_value + p * (self.max_value - self.min_value)))
+        self.value = round(self.min_value + p * (self.max_value - self.min_value))
         if self.has_label:
             self.label.text = str(self.value)
 
