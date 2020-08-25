@@ -78,7 +78,7 @@ class TextInput:
 
                 # If none exist, create counter for that key:
                 if event.key not in self.keyrepeat_counters:
-                    if not event.key == pl.K_RETURN:
+                    if not (event.key == pl.K_RETURN or event.key == 271):
                         self.keyrepeat_counters[event.key] = [0, event.unicode]
 
                 if event.key == pl.K_BACKSPACE:
@@ -95,7 +95,7 @@ class TextInput:
                         + self.input_string[self.cursor_position + 1:]
                     )
 
-                elif event.key == pl.K_RETURN:
+                elif event.key == pl.K_RETURN or event.key == 271:
                     return True
 
                 elif event.key == pl.K_RIGHT:

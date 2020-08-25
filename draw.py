@@ -168,6 +168,18 @@ def set_input(var, new_value):
         main_textbox_list[control[1]].text_object.input_string = new_value
         main_textbox_list[control[1]].text_object.cursor_position = len(new_value)
         main_textbox_list[control[1]].text_object.update([])
+    if control[0] == "sTextbox":
+        settings_textbox_list[control[1]].text_object.input_string = new_value
+        settings_textbox_list[control[1]].text_object.cursor_position = len(new_value)
+        settings_textbox_list[control[1]].text_object.update([])
+    if control[0] == "mSlider":
+        main_slider_list[control[1]].update(new_value)
+    if control[0] == "sSlider":
+        settings_slider_list[control[1]].update(new_value)
+
+def load_inputs(settings):
+    set_input("textString", settings.text_input)
+    set_input("R", settings.star_color[0])
 
 def initialize_view(new_starfield, settings):
     #settings_show = False
@@ -211,6 +223,6 @@ def draw_view():
 
 ### Constellation objects have a .draw() method that can be used to draw them
 def draw_constellations(settings):
-    star_map.place_constellations(50, settings)
+    star_map.place_constellations(40, settings)
     for constellation in star_map.list_of_constellations:
         constellation.draw(STARFIELDSURF, settings)

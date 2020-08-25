@@ -95,6 +95,10 @@ class Slider:
         self.slide_area = area
         self.label = Label(text = str(self.value), pos = label_position, background_color = self.background_color, text_color=label_color)
 
+    def update(self, new_value):
+        self.value = new_value
+        self.label.text = str(new_value)
+
     def slide(self, mouse):
         if self.is_vertical:
             entry = 1

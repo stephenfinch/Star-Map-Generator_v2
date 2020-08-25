@@ -8,7 +8,7 @@ settings_data = Settings()
 make_stars(settings_data)
 main_click_areas = define_main_interactions()
 settings_click_areas = define_settings_interactions()
-set_input("textString", "Welcome")
+load_inputs(settings_data)
 setting_show_temp = False
 clock = pygame.time.Clock()
 display_changed = True
@@ -99,12 +99,16 @@ while True:
         for textbox in settings_textbox_list:
             if textbox.active:
                 if textbox.text_object.update(events):
+                    perform_action("reset", settings_data)
+                    starfield_changed = True
                     textbox.active = False
                 display_changed = True
     else:
         for textbox in main_textbox_list:
             if textbox.active:
                 if textbox.text_object.update(events):
+                    perform_action("reset", settings_data)
+                    starfield_changed = True
                     textbox.active = False
                 display_changed = True
 
