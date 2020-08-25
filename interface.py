@@ -66,7 +66,7 @@ class Slider:
         border_color = (0, 0, 0), background_color = (255, 255, 255),\
         area = ((0, 0), (0, 0)), slider_rail = ((0, 0), (0, 0)), rail_color = (50, 50, 50),\
         slider_size = (0, 0), slider_color = (0, 0, 0), is_vertical = False,\
-        label_position = (0, 0), label_color = (255, 255, 255)):
+        label_position = (-1, -1), label_color = (255, 255, 255)):
         self.min_value = min_value
         self.max_value = max_value
         self.increment = increment
@@ -93,7 +93,11 @@ class Slider:
                 )
         '''
         self.slide_area = area
-        self.label = Label(text = str(self.value), pos = label_position, background_color = self.background_color, text_color=label_color)
+        if not label_position == (-1, -1):
+            self.label = Label(text = str(self.value), pos = label_position, background_color = self.background_color, text_color=label_color)
+            self.has_label = True
+        else:
+            self.has_label = False
 
     def update(self, new_value):
         self.value = new_value
@@ -113,7 +117,8 @@ class Slider:
             pos = smax
         p = (pos - smin) / (smax - smin)
         self.value = int(math.floor(self.min_value + p * (self.max_value - self.min_value)))
-        self.label.text = str(self.value)
+        if self.has_label:
+            self.label.text = str(self.value)
 
     def draw(self, main_surface):
         pygame.draw.rect(main_surface, self.border_color, self.area)
@@ -125,9 +130,10 @@ class Slider:
         if self.is_vertical:
             pos = ((((self.slider_rail[0][0] + self.slider_rail[1][0]) / 2), self.slider_rail[0][1] - (self.slider_size[1] / 2) + (self.slider_rail[1][1] * p)), self.slider_size)
         else:
-            pos = ((self.slider_rail[0][0] - (self.slider_size[0] / 2) + (self.slider_rail[1][0] * p), (self.slider_rail[0][1] + self.slider_rail[1][1]) / 2), self.slider_size)
+            pos = ((self.slider_rail[0][0] - (self.slider_size[0] / 2) + (self.slider_rail[1][0] * p), self.slider_rail[0][1] + (self.slider_rail[1][1]- self.slider_size[1]) / 2), self.slider_size)
         pygame.draw.rect(main_surface, self.slider_color, pos)
-        self.label.draw(main_surface)
+        if self.has_label:
+            self.label.draw(main_surface)
 
 
 
@@ -150,10 +156,21 @@ class Textbox:
 
     def update(self, events):
         is_enter_pressed = self.text_object.update(events)
+        #temp_text = ""
+        #for char in self.TextInput.input_string:
+        #    if char.isdigit() and self.numbers_only:
+        #        temp_text += char
+        #    elif (char.isalpha() or char == " ") and self.english_only:
+        #        temp_text += char
+        ##self.TextInput.input_string == temp_text
+            
+
+
         if self.english_only:
             pass
         if self.numbers_only:
-            pass
+            if self.TextInput.input_string.isdigit():
+                pass
         return is_enter_pressed
 
     def draw(self, main_surface):

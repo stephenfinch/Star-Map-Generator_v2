@@ -28,44 +28,41 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 NIGHTSKY = (7, 11, 15)
 GRAY = (100, 100, 100)
-LIGHTGRAY = (50, 50, 50)
+LIGHTGRAY = (30, 30, 30)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 NEWBLUE = (43, 67, 244)
 NEWESTBLUE = (153, 230, 255) #gucci
 
-#buttons --> [4x text position, show constellations, generate]
+#buttons --> [4x text position, generate]
 main_button_list = [
     Button(action="reset", text="Generate", text_active="Generating", color=(127, 127, 127), area=((1, 1), (198, 75)), border_size=2),
-    #show constellations
     #push position up
     #push position down
     #push position left
     #push position right
-    Button(action="settings", text="Settings", color=(127, 127, 127), area=((1, 161), (198, 75)), border_size=2)
+    Button(action="settings", text="Settings", color=(127, 127, 127), area=((1, 674), (198, 75)), border_size=2)
 ]
 
+#button --> [show constellations]
 settings_button_list = [
-    Button(action="settings", text="Settings", color=(127, 127, 127), area=((1, 161), (198, 75)), border_size=2)
+    Button(action="settings", text="Back", color=(127, 127, 127), area=((1, 674), (198, 75)), border_size=2),
+    Button(action="colorbox", text="", color=(127, 127, 127), area=((360, 10), (152, 152)), border_size=2),
+    Button(action="starcolor", text="", color=(127, 127, 127), area=((850, 20), (60, 60)), border_size=2),
+    Button(action="backgroundcolor", text="", color=(127, 127, 127), area=((850, 90), (60, 60)), border_size=2)
 ]
 
-#sliders --> [R,G,B,number_of_constellations,text_size]
-'''
-slider_list = [
-    Slider('R', 0, 255, 1),
-    Slider('G', 0, 255, 1),
-    Slider('B', 0, 255, 1),
-    Slider('Constellations', 0, 100, 1),
-    Slider('Text Size', 1, 10, 1)
-]
-'''
+
 main_slider_list = [
 
 ]
 
+#sliders --> [R,G,B,number_of_constellations,text_size]
 settings_slider_list = [
-    Slider(action="R", area = ((10, 400), (50, 315)), slider_rail=((20, 445), (20, 256)), is_vertical=True, slider_size=(20,10), slider_color=(127, 0, 0), label_position=(18, 410), label_color=(127, 0, 0))
+    Slider(action="R", area = ((10, 10), (330, 32)), slider_rail=((65, 25), (256, 2)), slider_size=(10,20), slider_color=(127, 0, 0), label_position=(15, 12), label_color=(127, 0, 0)),
+    Slider(action="G", area = ((10, 70), (330, 32)), slider_rail=((65, 85), (256, 2)), slider_size=(10,20), slider_color=(0, 127, 0), label_position=(15, 72), label_color=(0, 127, 0)),
+    Slider(action="B", area = ((10, 130), (330, 32)), slider_rail=((65, 145), (256, 2)), slider_size=(10,20), slider_color=(0, 0, 127), label_position=(15, 132), label_color=(0, 0, 127))
 ]
 
 #text boxes --> [num of stars, constellation text]
@@ -74,15 +71,17 @@ main_textbox_list = [
 ]
 
 settings_textbox_list = [
-
+    #Textbox(action="starcount", area=((50, 200), (198, 25)), border_size=2, spacing=1, max_length=15)
 ]
 
 main_label_list = [
-    Label(text = "Input string:", font_size = 32, pos = (25, 90))
+    Label(text = "Input string:", font_size = 32, pos = (25, 85))
 ]
 
 settings_label_list = [
-
+    Label(text = ">>>       Use for Stars       >>>", font_size = 24, pos = (530, 35)),
+    Label(text = ">>> Use for Background >>>", font_size = 24, pos = (530, 105)),
+    #Label(text = "# of Stars", font_size = 24, pos = (70, 180))
 ]
 
 def define_main_interactions():
@@ -91,6 +90,7 @@ def define_main_interactions():
     entry = 0
     for button in main_button_list:
         temp_list.append(("Button", button.area, button.action, entry))
+        temp_dict.update({button.action:("mButton", entry)})
         entry += 1
     entry = 0
     for textbox in main_textbox_list:
@@ -111,6 +111,7 @@ def define_settings_interactions():
     entry = 0
     for button in settings_button_list:
         temp_list.append(("Button", button.area, button.action, entry))
+        temp_dict.update({button.action:("sButton", entry)})
         entry += 1
     entry = 0
     for textbox in settings_textbox_list:
@@ -126,7 +127,7 @@ def define_settings_interactions():
     return temp_list
 
 def draw_outline(settings):
-    pygame.draw.circle(STARFIELDSURF, NIGHTSKY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 0)
+    pygame.draw.circle(STARFIELDSURF, settings.back_color, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 0)
     pygame.draw.circle(STARFIELDSURF, GRAY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 1)
     if settings.show_grid:
         circle_count = 8
@@ -160,6 +161,28 @@ def query_input(var):
     control = input_dict[var]
     if control[0] == "mTextbox":
         return main_textbox_list[control[1]].text_object.input_string
+    elif control[0] == "sTextbox":
+        return settings_textbox_list[control[1]].text_object.input_string
+    elif control[0] == "mSlider":
+        return main_slider_list[control[1]].value
+    elif control[0] == "sSlider":
+        return settings_slider_list[control[1]].value
+
+def get_input_object(var):
+    global input_dict
+    control = input_dict[var]
+    if control[0] == "mButton":
+        return main_button_list[control[1]]
+    if control[0] == "sButton":
+        return settings_button_list[control[1]]
+    if control[0] == "mTextbox":
+        return main_textbox_list[control[1]]
+    elif control[0] == "sTextbox":
+        return settings_textbox_list[control[1]]
+    elif control[0] == "mSlider":
+        return main_slider_list[control[1]]
+    elif control[0] == "sSlider":
+        return settings_slider_list[control[1]]
 
 def set_input(var, new_value):
     global input_dict
@@ -168,19 +191,30 @@ def set_input(var, new_value):
         main_textbox_list[control[1]].text_object.input_string = new_value
         main_textbox_list[control[1]].text_object.cursor_position = len(new_value)
         main_textbox_list[control[1]].text_object.update([])
-    if control[0] == "sTextbox":
+    elif control[0] == "sTextbox":
         settings_textbox_list[control[1]].text_object.input_string = new_value
         settings_textbox_list[control[1]].text_object.cursor_position = len(new_value)
         settings_textbox_list[control[1]].text_object.update([])
-    if control[0] == "mSlider":
+    elif control[0] == "mSlider":
         main_slider_list[control[1]].update(new_value)
-    if control[0] == "sSlider":
+    elif control[0] == "sSlider":
         settings_slider_list[control[1]].update(new_value)
 
 def load_inputs(settings):
     set_input("textString", settings.text_input)
     set_input("R", settings.star_color[0])
-
+    set_input("G", settings.star_color[1])
+    set_input("B", settings.star_color[2])
+    color_r = query_input("R")
+    color_g = query_input("G")
+    color_b = query_input("B")
+    get_input_object("colorbox").color = (color_r, color_g, color_b)
+    get_input_object("colorbox").color_active = (color_r, color_g, color_b)
+    get_input_object("starcolor").color = settings.star_color
+    get_input_object("starcolor").color_active = settings.star_color
+    get_input_object("backgroundcolor").color = settings.back_color
+    get_input_object("backgroundcolor").color_active = settings.back_color
+    
 def initialize_view(new_starfield, settings):
     #settings_show = False
     global STARFIELDSURF, STARFIELDSURF_HOLD

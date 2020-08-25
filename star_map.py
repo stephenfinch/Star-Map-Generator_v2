@@ -52,15 +52,15 @@ class Map:
                 temp_letter_constellation.center = (centerX, centerY)
                 string_index += 1
                 self.list_of_constellations.append(temp_letter_constellation)
-        else:
-            
-            # do something else for this part
-            for i in range(settings.number_of_constellations):
-                constellation_pick = random.randint(5,9)
-                temp_other_constellation = Constellation(self.constellation_size, (i*40 + self.Xcenter,i*40 + self.Ycenter), settings)
-                temp_other_constellation.grid_points.append(OTHER_CONSTELLATIONS.get(constellation_pick)[0])
-                temp_other_constellation.grid_lines.append(OTHER_CONSTELLATIONS.get(constellation_pick)[1])
-                self.list_of_constellations.append(temp_other_constellation)
+        #else:
+        #    
+        #    # do something else for this part
+        #    for i in range(settings.number_of_constellations):
+        #        constellation_pick = random.randint(5,9)
+        #        temp_other_constellation = Constellation(self.constellation_size, (i*40 + self.Xcenter,i*40 + self.Ycenter), settings)
+        #        temp_other_constellation.grid_points.append(OTHER_CONSTELLATIONS.get(constellation_pick)[0])
+        #        temp_other_constellation.grid_lines.append(OTHER_CONSTELLATIONS.get(constellation_pick)[1])
+        #        self.list_of_constellations.append(temp_other_constellation)
 
 
 LETTER_CONSTELLATIONS = {
@@ -72,12 +72,12 @@ LETTER_CONSTELLATIONS = {
     'F':([2,4,12,14,22],[(2,12),(12,22),(2,4),(12,14)]),
     'G':([2,4,6,10,16,18,20,22,24],[(2,4),(2,6),(4,10),(6,16),(16,22),(18,20),(20,24),(22,24)]),
     'H':([2,4,12,14,22,24],[(2,12),(12,22),(4,14),(14,24),(12,14)]),
-    'I':([2,3,4,22,23,24],[(2,3),(3,4),(3,23),(22,23),(23,24)]),
+    'I':([2,3,4,13,22,23,24],[(2,3),(3,4),(3,13),(13,23),(22,23),(23,24)]),
     'J':([1,3,4,16,18,22],[(1,3),(3,4),(3,18),(18,22),(22,16)]),
     'K':([2,4,12,22,24],[(2,12),(4,12),(12,22),(12,24)]),
     'L':([2,12,22,24],[(2,12),(12,22),(22,24)]),
-    'M':([1,5,21,23,25],[(1,21),(1,23),(5,23),(5,25)]),
-    'N':([1,4,21,24],[(1,21),(1,24),(24,4)]),
+    'M':([2,4,21,23,25],[(2,21),(2,23),(4,23),(4,25)]),
+    'N':([1,4,13,21,24],[(1,21),(1,13),(13,24),(24,4)]),
     'O':([2,4,6,10,16,20,22,24],[(2,4),(2,6),(4,10),(6,16),(10,20),(16,22),(20,24),(22,24)]),
     'P':([2,3,9,12,13,22],[(2,12),(12,22),(2,3),(3,9),(9,13),(12,13)]),
     'Q':([2,4,6,10,16,19,20,22,24,25],[(2,4),(2,6),(4,10),(6,16),(10,20),(16,22),(19,25),(20,24),(22,24)]),
@@ -86,13 +86,13 @@ LETTER_CONSTELLATIONS = {
     'T':([1,3,5,23],[(1,3),(3,5),(3,23)]),
     'U':([1,5,16,20,22,24],[(1,16),(5,20),(16,22),(20,24),(22,24)]),
     'V':([1,5,23],[(1,23),(5,23)]),
-    'W':([1,3,5,22,24],[(1,22),(3,22),(3,24),(5,24)]),
+    'W':([1,8,5,22,24],[(1,22),(8,22),(8,24),(5,24)]),
     'X':([1,4,21,24],[(1,24),(4,21)]),
     'Y':([2,4,13,23],[(2,13),(4,13),(13,23)]),
     'Z':([2,4,22,24],[(2,4),(4,22),(22,24)]),
     ' ':([],[])
 }
-
+'''
 OTHER_CONSTELLATIONS = {
     0:([],[]),
     1:([],[]),
@@ -105,3 +105,4 @@ OTHER_CONSTELLATIONS = {
     8:([1,3,12,25],[(1,12),(12,3),(3,25)]),
     9:([1,3,5,13,22,24],[(1,13),(3,13),(5,13),(22,13),(24,13)]),
 }
+'''

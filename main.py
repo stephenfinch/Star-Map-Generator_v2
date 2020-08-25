@@ -92,8 +92,10 @@ while True:
         if click_action[0] == "Slider" and event.type == MOUSEMOTION:
             if settings_show:
                 settings_slider_list[click_action[1]].slide(event.pos)
+                action_list.append(settings_slider_list[click_action[1]].action)
             else:
                 main_slider_list[click_action[1]].slide(event.pos)
+                action_list.append(main_slider_list[click_action[1]].action)
             display_changed = True
     if settings_show:
         for textbox in settings_textbox_list:
