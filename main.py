@@ -101,8 +101,9 @@ while True:
         for textbox in settings_textbox_list:
             if textbox.active:
                 if textbox.text_object.update(events):
-                    perform_action("reset", settings_data)
-                    starfield_changed = True
+                    perform_action(textbox.action, settings_data)
+                    if textbox.action == "reset":
+                        starfield_changed = True
                     textbox.active = False
                 display_changed = True
     else:

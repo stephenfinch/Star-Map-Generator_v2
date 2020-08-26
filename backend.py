@@ -12,8 +12,8 @@ def perform_action(action, settings):
         textbox.text_object.input_string = temp_text.strip()
         textbox.text_object.cursor_position = len(temp_text.strip())
         textbox.text_object.update([])
+        perform_action("starcount", settings)
         make_stars(settings)
-
     if action == "settings":
         swap_settings()
     if action == "R" or action == "G" or action == "B":
@@ -30,3 +30,15 @@ def perform_action(action, settings):
         settings.back_color = get_input_object("colorbox").color
         get_input_object("backgroundcolor").color = get_input_object("colorbox").color
         get_input_object("backgroundcolor").color_active = get_input_object("colorbox").color
+    if action == "starcount":
+        temp_num, temp_text = query_input("starcount"), ''
+        for char in temp_num:
+            if char.isdigit():
+                temp_text += char
+        if temp_text:
+            settings.number_of_stars = int(temp_text)
+        textbox = get_input_object("starcount")
+        textbox.text_object.input_string = temp_text
+        textbox.text_object.cursor_position = len(temp_text.strip())
+        textbox.text_object.update([])
+        

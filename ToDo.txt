@@ -1,31 +1,13 @@
->>> main.py <<<
----
+interface has all the right buttons and sliders and things but they dont all do things
+-number of stars
+-constellations density
+-show grid
+-show constellations
 
->>> map.py <<<
----handles starfield instances
----imports star.py, constellation.py
+TOTAL reword of random constellations....
 
->>> star.py <<<
----Star atributes / functions
----smart sizes
----no stars on the edge (bigger buffer)
+add text size/location input interface and make it work
 
->>> constellation.py <<<
----handles constellation
+merge branch
 
-
-
-
-
-
-Things we want to add:
-  -Options for users
-    Starfield color
-    Background color
-    Star colors
-    -Main constellation
-      Text
-      Location
-      Star colors
-    Extra constellations
-
+add fun easter eggs!! idk what but yeah cool

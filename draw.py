@@ -135,13 +135,13 @@ def draw_outline(settings):
     pygame.draw.circle(STARFIELDSURF, GRAY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 1)
     if settings.show_grid:
         circle_count = 8
-        line_count = 12
+        line_count = 24
         for i in range(1, circle_count + 1):
-            pygame.draw.circle(STARFIELDSURF, LIGHTGRAY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / (circle_count + 1) / 2) * i, 1)
+            pygame.draw.circle(STARFIELDSURF, LIGHTGRAY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), field_x // (2 * (circle_count + 1)) * i, 1)
         for i in range(line_count):
-            x1 = field_x * math.cos(math.pi * i / line_count) / 2
-            y1 = field_y * math.sin(math.pi * i / line_count) / 2
-            point_list = ((STARFIELDSURF.get_width() / 2 + x1,STARFIELDSURF.get_height() / 2 + y1), (STARFIELDSURF.get_width() / 2 - x1,STARFIELDSURF.get_height() / 2 - y1))
+            xmult = math.cos(math.pi * 2 * i / line_count)
+            ymult = math.sin(math.pi * 2 * i / line_count)
+            point_list = ((STARFIELDSURF.get_width() / 2 + (xmult * field_x / 2),STARFIELDSURF.get_height() / 2 + (ymult * field_y / 2)), (STARFIELDSURF.get_width() / 2 + xmult * (field_x // (2 * (circle_count + 1))),STARFIELDSURF.get_height() / 2 + ymult * (field_y // (2 * (circle_count + 1)))))
             pygame.draw.aalines(STARFIELDSURF, LIGHTGRAY, False, point_list)
 
 def make_stars(settings):
@@ -218,7 +218,8 @@ def load_inputs(settings):
     get_input_object("starcolor").color_active = settings.star_color
     get_input_object("backgroundcolor").color = settings.back_color
     get_input_object("backgroundcolor").color_active = settings.back_color
-    
+    set_input("starcount", settings.number_of_stars)
+
 def initialize_view(new_starfield, settings):
     #settings_show = False
     global STARFIELDSURF, STARFIELDSURF_HOLD
@@ -264,3 +265,4 @@ def draw_constellations(settings):
     star_map.place_constellations(40, settings)
     for constellation in star_map.list_of_constellations:
         constellation.draw(STARFIELDSURF, settings)
+

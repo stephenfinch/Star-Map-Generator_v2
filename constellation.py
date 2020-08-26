@@ -6,12 +6,12 @@ class Constellation():
 
     def __init__(self, size, center, settings):
         self.size = size #side length of the 5x5 grid
-        self.center = center
+        self.center = center #x,y pos of the center of the grid
         self.grid_points = [] #list of list of points on the 5x5 grid
         self.grid_lines = [] #list with each item being a line -- a line is a pair of points
         self.point_spacing = self.size // 4
-        self.star_points = []
-        self.star_lines = []
+        self.star_points = [] #list of star objects that are placed at the right points
+        self.star_lines = [] #
         self.point_dict = {}
 
     ### This function can draw the constellation using its own data (self)
@@ -19,7 +19,7 @@ class Constellation():
 
         ### This function will add some noise to the location of the stars in each constellation
         def shift_points(input):
-            scale = 5
+            scale = 3 # the bigger the number the more ridged the letter constellations look
             return input + random.randint(-self.point_spacing//scale, self.point_spacing//scale)
 
         ### This function will take the points on the 5x5 grid and make Star objects with proper centers and sizes for the constellation
