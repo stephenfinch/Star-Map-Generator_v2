@@ -1,7 +1,52 @@
-from draw import make_stars, swap_settings, query_input, get_input_object
+from draw import make_stars, swap_settings, query_input, get_input_object, star_map
 
 def perform_action(action, settings):
     if action == "reset":
+        perform_action("rewrite", settings)
+        make_stars(settings)
+    elif action == "settings":
+        swap_settings()
+    elif action == "R" or action == "G" or action == "B":
+        color_r = query_input("R")
+        color_g = query_input("G")
+        color_b = query_input("B")
+        get_input_object("colorbox").color = (color_r, color_g, color_b)
+        get_input_object("colorbox").color_active = (color_r, color_g, color_b)
+    elif action == "starcolor":
+        settings.star_color = get_input_object("colorbox").color
+        get_input_object("starcolor").color = get_input_object("colorbox").color
+        get_input_object("starcolor").color_active = get_input_object("colorbox").color
+    elif action == "backgroundcolor":
+        settings.back_color = get_input_object("colorbox").color
+        get_input_object("backgroundcolor").color = get_input_object("colorbox").color
+        get_input_object("backgroundcolor").color_active = get_input_object("colorbox").color
+    elif action == "starcount":
+        temp_num, temp_text = query_input("starcount"), ''
+        for char in temp_num:
+            if char.isdigit():
+                temp_text += char
+        if temp_text:
+            settings.number_of_stars = int(temp_text)
+        else:
+            settings.number_of_stars = 0
+            temp_text = "0"
+        textbox = get_input_object("starcount")
+        textbox.text_object.input_string = temp_text
+        textbox.text_object.cursor_position = len(temp_text.strip())
+        textbox.text_object.update([])
+    elif action == "showgrid":
+        settings.show_grid = not settings.show_grid
+    elif action == "showconstellations":
+        settings.show_constellations = not settings.show_constellations
+    elif action == "textSizeUp":
+        if settings.text_size < 100:
+            settings.text_size += 5
+        perform_action("rewrite", settings)
+    elif action == "textSizeDown":
+        if settings.text_size > 20:
+            settings.text_size -= 5
+        perform_action("rewrite", settings)
+    elif action == "rewrite":
         textbox = get_input_object("textString")
         temp_string = query_input("textString")
         temp_text = ""
@@ -13,32 +58,21 @@ def perform_action(action, settings):
         textbox.text_object.cursor_position = len(temp_text.strip())
         textbox.text_object.update([])
         perform_action("starcount", settings)
-        make_stars(settings)
-    if action == "settings":
-        swap_settings()
-    if action == "R" or action == "G" or action == "B":
-        color_r = query_input("R")
-        color_g = query_input("G")
-        color_b = query_input("B")
-        get_input_object("colorbox").color = (color_r, color_g, color_b)
-        get_input_object("colorbox").color_active = (color_r, color_g, color_b)
-    if action == "starcolor":
-        settings.star_color = get_input_object("colorbox").color
-        get_input_object("starcolor").color = get_input_object("colorbox").color
-        get_input_object("starcolor").color_active = get_input_object("colorbox").color
-    if action == "backgroundcolor":
-        settings.back_color = get_input_object("colorbox").color
-        get_input_object("backgroundcolor").color = get_input_object("colorbox").color
-        get_input_object("backgroundcolor").color_active = get_input_object("colorbox").color
-    if action == "starcount":
-        temp_num, temp_text = query_input("starcount"), ''
-        for char in temp_num:
-            if char.isdigit():
-                temp_text += char
-        if temp_text:
-            settings.number_of_stars = int(temp_text)
-        textbox = get_input_object("starcount")
-        textbox.text_object.input_string = temp_text
-        textbox.text_object.cursor_position = len(temp_text.strip())
-        textbox.text_object.update([])
-        
+        perform_action("textPosX", settings)
+    elif action == "textPosX" or action == "textPosY":
+        strX = ""
+        posX = query_input("textPosX")
+        for char in posX:
+            if char.isdigit() or char == "-":
+                strX += char
+        if not strX:
+            strX = "0"
+        strY = ""
+        posY = query_input("textPosY")
+        for char in posY:
+            if char.isdigit() or char == "-":
+                strY += char
+        if not strY:
+            strY = "0"
+        settings.text_location = star_map.coerce_to_center(int(strX),int(strY))
+    

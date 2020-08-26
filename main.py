@@ -60,7 +60,7 @@ while True:
                         click_action = ("Button", entry[3])
                         action_list.append(entry[2])
                         display_changed = True
-                        if entry[2] == "reset":
+                        if entry[2] == "reset" or entry[2] == "textSizeUp" or entry[2] == "textSizeDown":
                             starfield_changed = True
                     if entry[0] == "Textbox":
                         if settings_show:
@@ -102,7 +102,7 @@ while True:
             if textbox.active:
                 if textbox.text_object.update(events):
                     perform_action(textbox.action, settings_data)
-                    if textbox.action == "reset":
+                    if textbox.action == "reset" or action == "textPosX" or action == "textPosY":
                         starfield_changed = True
                     textbox.active = False
                 display_changed = True
@@ -110,8 +110,9 @@ while True:
         for textbox in main_textbox_list:
             if textbox.active:
                 if textbox.text_object.update(events):
-                    perform_action("reset", settings_data)
-                    starfield_changed = True
+                    perform_action(textbox.action, settings_data)
+                    if textbox.action == "reset" or action == "textPosX" or action == "textPosY":
+                        starfield_changed = True
                     textbox.active = False
                 display_changed = True
 

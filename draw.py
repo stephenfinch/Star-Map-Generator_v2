@@ -38,11 +38,9 @@ NEWESTBLUE = (153, 230, 255) #gucci
 #buttons --> [4x text position, generate]
 main_button_list = [
     Button(action="reset", text="Generate", text_active="Generating", color=(127, 127, 127), area=((1, 1), (198, 75)), border_size=2),
-    #push position up
-    #push position down
-    #push position left
-    #push position right
-    Button(action="settings", text="Settings", color=(127, 127, 127), area=((1, 674), (198, 75)), border_size=2)
+    Button(action="settings", text="Settings", color=(127, 127, 127), area=((1, 674), (198, 75)), border_size=2),
+    Button(action="textSizeUp", text="+", color=(127, 127, 127), area=((75, 280), (50, 50)), border_size=2),
+    Button(action="textSizeDown", text="-", color=(127, 127, 127), area=((75, 390), (50, 50)), border_size=2)
 ]
 
 #button --> [show constellations]
@@ -70,15 +68,20 @@ settings_slider_list = [
 
 #text boxes --> [num of stars, constellation text]
 main_textbox_list = [
-    Textbox(action="textString", area=((1, 130), (198, 25)), border_size=2, spacing=1, max_length=15)
+    Textbox(action="textString", area=((1, 130), (198, 25)), border_size=2, spacing=1, max_length=15),
+    Textbox(action="textPosX", area=((25, 235), (65, 25)), border_size=2, spacing=1, max_length=3),
+    Textbox(action="textPosY", area=((110, 235), (65, 25)), border_size=2, spacing=1, max_length=3)
 ]
 
 settings_textbox_list = [
-    Textbox(action="starcount", area=((100, 300), (198, 25)), border_size=2, spacing=1, max_length=15)
+    Textbox(action="starcount", area=((100, 300), (198, 25)), border_size=2, spacing=1, max_length=5)
 ]
 
 main_label_list = [
-    Label(text = "Input string:", font_size = 32, pos = (25, 85))
+    Label(text = "Input Text:", font_size = 32, pos = (25, 85)),
+    Label(text = "Text Position:", font_size = 32, pos = (15, 165)),
+    Label(text = "    x         y", font_size = 32, pos = (19, 195)),
+    Label(text = "Text Size", font_size = 32, pos = (40, 340))
 ]
 
 settings_label_list = [
@@ -218,7 +221,9 @@ def load_inputs(settings):
     get_input_object("starcolor").color_active = settings.star_color
     get_input_object("backgroundcolor").color = settings.back_color
     get_input_object("backgroundcolor").color_active = settings.back_color
-    set_input("starcount", settings.number_of_stars)
+    set_input("starcount", str(settings.number_of_stars))
+    set_input("textPosX", "0")
+    set_input("textPosY", "0")
 
 def initialize_view(new_starfield, settings):
     #settings_show = False
@@ -262,7 +267,7 @@ def draw_view():
 
 ### Constellation objects have a .draw() method that can be used to draw them
 def draw_constellations(settings):
-    star_map.place_constellations(40, settings)
+    star_map.place_constellations(settings.text_size, settings)
     for constellation in star_map.list_of_constellations:
         constellation.draw(STARFIELDSURF, settings)
 

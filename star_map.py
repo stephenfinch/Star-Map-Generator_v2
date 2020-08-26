@@ -10,11 +10,24 @@ class Map:
     def __init__(self, field_x, field_y):
         self.field_x = field_x
         self.field_y = field_y
-        
         self.field_buffer = 50 #gap between display edge and circle
         self.field_inner_buffer = 5 #gap between circle and outer stars, bigger number --> bigger gap
         self.r = self.field_x / 2 - self.field_inner_buffer #raduis
         self.Xcenter = self.Ycenter = self.field_x / 2 + self.field_buffer
+
+    ### given an (x,y) point it will return True/False if the point is in the circle drawn
+    def is_in_circle(self, x, y):
+        return (x - self.Xcenter) ** 2 + (y - self.Ycenter) ** 2 <= self.r ** 2
+
+
+    def coerce_to_center(self, x, y):
+        newx, newy = x + self.Xcenter, y + self.Ycenter
+        if self.is_in_circle(newx, newy):
+            return (x, y)
+        else:
+            return (0, 0)
+
+
 
 ## STARS ## makes a list of Star objects and adds them to a list
     def place_stars(self, settings):
@@ -22,13 +35,9 @@ class Map:
         self.list_of_stars = []
         stars_added = 0
 
-        ### given an (x,y) pair it will return True/False if the pair is in the circle drawn
-        def is_in_circle(x, y):
-            return (x - self.Xcenter) ** 2 + (y - self.Ycenter) ** 2 <= self.r ** 2
-
         while stars_added < self.number_of_stars:
             x, y = random.randint(self.field_buffer, self.field_buffer + self.field_x), random.randint(self.field_buffer, self.field_buffer + self.field_y)
-            if is_in_circle(x, y):
+            if self.is_in_circle(x, y):
                 self.list_of_stars.append(Star(x, y, settings))
                 stars_added += 1
 
@@ -48,10 +57,12 @@ class Map:
                 temp_letter_constellation.grid_points.append(LETTER_CONSTELLATIONS.get(char)[0])
                 temp_letter_constellation.grid_lines.append(LETTER_CONSTELLATIONS.get(char)[1])
                 centerX = (self.constellation_size + self.letter_spacing) * (string_index - (string_length - 1) / 2) + self.Xcenter + settings.text_location[0]
-                centerY = 220 - settings.text_location[1]
+                centerY = self.Ycenter - settings.text_location[1]
                 temp_letter_constellation.center = (centerX, centerY)
                 string_index += 1
                 self.list_of_constellations.append(temp_letter_constellation)
+            if settings.show_constellations:
+                pass
         #else:
         #    
         #    # do something else for this part

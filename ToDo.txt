@@ -1,13 +1,17 @@
 interface has all the right buttons and sliders and things but they dont all do things
--number of stars
 -constellations density
--show grid
 -show constellations
 
-TOTAL reword of random constellations....
+TOTAL reword of random constellations.... OR NOT
 
 add text size/location input interface and make it work
 
 merge branch
 
 add fun easter eggs!! idk what but yeah cool
+
+
+
+### BUGS ###
+text box input can happen all at once
+add negative 3 digit nums to the text location x and y input text boxes
