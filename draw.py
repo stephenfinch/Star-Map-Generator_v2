@@ -69,8 +69,8 @@ settings_slider_list = [
 #text boxes --> [num of stars, constellation text]
 main_textbox_list = [
     Textbox(action="textString", area=((1, 130), (198, 25)), border_size=2, spacing=1, max_length=15),
-    Textbox(action="textPosX", area=((25, 235), (65, 25)), border_size=2, spacing=1, max_length=3),
-    Textbox(action="textPosY", area=((110, 235), (65, 25)), border_size=2, spacing=1, max_length=3)
+    Textbox(action="textPosX", area=((25, 235), (65, 25)), border_size=2, spacing=1, max_length=4),
+    Textbox(action="textPosY", area=((110, 235), (65, 25)), border_size=2, spacing=1, max_length=4)
 ]
 
 settings_textbox_list = [

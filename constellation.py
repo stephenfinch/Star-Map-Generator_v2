@@ -8,10 +8,10 @@ class Constellation():
         self.size = size #side length of the 5x5 grid
         self.center = center #x,y pos of the center of the grid
         self.grid_points = [] #list of list of points on the 5x5 grid
-        self.grid_lines = [] #list with each item being a line -- a line is a pair of points
+        self.grid_lines = [] #list with each item being a pair of points on the 5x5 grid
         self.point_spacing = self.size // 4
         self.star_points = [] #list of star objects that are placed at the right points
-        self.star_lines = [] #
+        self.star_lines = [] #list of pairs of points ready to be drawn into star objects and lines using the pygame draw.lines function
         self.point_dict = {}
 
     ### This function can draw the constellation using its own data (self)
@@ -59,3 +59,67 @@ class Constellation():
             pygame.draw.circle(main_surface, star.color, (star.x, star.y), star.size, 0)
         for line in self.star_lines:
             pygame.draw.lines(main_surface, settings.star_color, False, line, 1)
+
+
+
+class Random_Constellation(Constellation):
+
+    def __init__(self, size, center, settings, orientation=0, is_inverted=False):
+        self.orientation = orientation
+        self.is_inverted = is_inverted
+        super().__init__(size, center, settings)
+
+    def change_orientation(self, shift): # num can be [0,3] and will indicate the orientation -- 0 is default and it rotates clockwise as num increases
+        def translate(num, shift):
+            oldX = (num - 1) % 5 + 1
+            oldY = (num - 1) // 5 + 1
+            if shift == 1:
+                newX = oldY
+                newY = 5 - ((oldX - 1) % 5)
+            elif shift == 2:
+                newX = 5 - ((oldX - 1) % 5)
+                newY = 5 - ((oldY - 1) % 5)
+            elif shift == 3:
+                newX = 5 - ((oldY - 1) % 5)
+                newY = oldX
+            return (newY - 1) * 5 + newX
+
+        new_grid_points = []
+        for group in self.grid_points:
+            temp_group = []
+            for num in group:
+                temp_group.append(translate(num, shift))
+            new_grid_points.append(temp_group)
+        self.grid_points = new_grid_points        
+        new_grid_lines = []
+        for group in self.grid_lines:
+            temp_group = []
+            for num in group:
+                temp_group.append((translate(num[0], shift), translate(num[1], shift)))
+            new_grid_lines.append(temp_group)
+        self.grid_lines = new_grid_lines
+
+    def invert(self):
+        new_grid_points = []
+        for group in self.grid_points:
+            temp_group = []
+            for num in group:
+                temp_group.append(((num - 1) // 5) * 5 + (5 - ((num - 1) % 5)))
+            new_grid_points.append(temp_group)
+        self.grid_points = new_grid_points        
+        new_grid_lines = []
+        for group in self.grid_lines:
+            temp_group = []
+            for num in group:
+                temp_group.append((((num[0] - 1) // 5) * 5 + (5 - ((num[0] - 1) % 5)), ((num[1] - 1) // 5) * 5 + (5 - ((num[1] - 1) % 5))))
+            new_grid_lines.append(temp_group)
+        self.grid_lines = new_grid_lines
+        
+
+    def draw(self, main_surface, settings):
+        if self.is_inverted:
+            self.invert()
+        if self.orientation != 0:
+            self.change_orientation(self.orientation)
+        super().draw(main_surface, settings)
+

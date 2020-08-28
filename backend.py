@@ -30,10 +30,7 @@ def perform_action(action, settings):
         else:
             settings.number_of_stars = 0
             temp_text = "0"
-        textbox = get_input_object("starcount")
-        textbox.text_object.input_string = temp_text
-        textbox.text_object.cursor_position = len(temp_text.strip())
-        textbox.text_object.update([])
+        change_textbox("starcount", temp_text.strip())
     elif action == "showgrid":
         settings.show_grid = not settings.show_grid
     elif action == "showconstellations":
@@ -47,16 +44,13 @@ def perform_action(action, settings):
             settings.text_size -= 5
         perform_action("rewrite", settings)
     elif action == "rewrite":
-        textbox = get_input_object("textString")
         temp_string = query_input("textString")
         temp_text = ""
         for char in temp_string:
             if char.isalpha() or char == " ":
                 temp_text += char
         settings.text_input = temp_text.strip()
-        textbox.text_object.input_string = temp_text.strip()
-        textbox.text_object.cursor_position = len(temp_text.strip())
-        textbox.text_object.update([])
+        change_textbox("textString", temp_text.strip())
         perform_action("starcount", settings)
         perform_action("textPosX", settings)
     elif action == "textPosX" or action == "textPosY":
@@ -67,6 +61,13 @@ def perform_action(action, settings):
                 strX += char
         if not strX:
             strX = "0"
+            change_textbox("textPosX", strX)
+        if abs(int(strX)) > 999:
+            if int(strX) < 0:
+                strX = "-999"
+            else:
+                strX = "999"
+            change_textbox("textPosX", strX)
         strY = ""
         posY = query_input("textPosY")
         for char in posY:
@@ -74,5 +75,17 @@ def perform_action(action, settings):
                 strY += char
         if not strY:
             strY = "0"
+            change_textbox("textPosY", strY)
+        if abs(int(strY)) > 999:
+            if int(strY) < 0:
+                strY = "-999"
+            else:
+                strY = "999"
+            change_textbox("textPosY", strY)
         settings.text_location = star_map.coerce_to_center(int(strX),int(strY))
     
+def change_textbox(textbox, string):
+    textbox = get_input_object(textbox)
+    textbox.text_object.input_string = string
+    textbox.text_object.cursor_position = len(string)
+    textbox.text_object.update([])
