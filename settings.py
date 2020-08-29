@@ -4,7 +4,7 @@ class Settings:
         #Main display
         self.text_input = '' #"Welcome"             #text box (maybe add numbers later)
         self.text_size = 35                      #slider
-        self.text_location = (0, 60)             #four buttons (arrows -- move the center)
+        self.text_location = (100, 70)             #four buttons (arrows -- move the center)
 
         #Options display
         #self.show_letter_constellations = True  #button --> turn on/off letter constellations
@@ -18,3 +18,5 @@ class Settings:
         #Backend
         self.star_color = (153, 230, 255)       #color box
         self.back_color = (10, 0, 10)           #color box
+        self.max_constellation_size = 100
+        self.min_constellation_size = 25

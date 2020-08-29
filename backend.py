@@ -1,4 +1,10 @@
-from draw import make_stars, swap_settings, query_input, get_input_object, star_map
+import pygame
+from draw import make_stars, swap_settings, query_input, get_input_object, star_map, STARFIELDSURF
+import tkinter as tk
+from tkinter import filedialog
+
+root = tk.Tk()
+root.withdraw()
 
 def perform_action(action, settings):
     if action == "reset":
@@ -33,15 +39,17 @@ def perform_action(action, settings):
         change_textbox("starcount", temp_text.strip())
     elif action == "showgrid":
         settings.show_grid = not settings.show_grid
+        if settings.show_grid:
+            get_input_object("showgrid").display_text_color = (0, 0, 0)
+        else:
+            get_input_object("showgrid").display_text_color = (63, 63, 63)
     elif action == "showconstellations":
         settings.show_constellations = not settings.show_constellations
     elif action == "textSizeUp":
-        if settings.text_size < 100:
-            settings.text_size += 5
+        settings.text_size = min((settings.text_size + 5), settings.max_constellation_size)
         perform_action("rewrite", settings)
     elif action == "textSizeDown":
-        if settings.text_size > 20:
-            settings.text_size -= 5
+        settings.text_size = max((settings.text_size - 5), settings.min_constellation_size)
         perform_action("rewrite", settings)
     elif action == "rewrite":
         temp_string = query_input("textString")
@@ -61,13 +69,13 @@ def perform_action(action, settings):
                 strX += char
         if not strX:
             strX = "0"
-            change_textbox("textPosX", strX)
+        change_textbox("textPosX", strX)
         if abs(int(strX)) > 999:
             if int(strX) < 0:
                 strX = "-999"
             else:
                 strX = "999"
-            change_textbox("textPosX", strX)
+        change_textbox("textPosX", strX)
         strY = ""
         posY = query_input("textPosY")
         for char in posY:
@@ -75,17 +83,25 @@ def perform_action(action, settings):
                 strY += char
         if not strY:
             strY = "0"
-            change_textbox("textPosY", strY)
+        change_textbox("textPosY", strY)
         if abs(int(strY)) > 999:
             if int(strY) < 0:
                 strY = "-999"
             else:
                 strY = "999"
-            change_textbox("textPosY", strY)
+        change_textbox("textPosY", strY)
         settings.text_location = star_map.coerce_to_center(int(strX),int(strY))
-    
+    elif action == "savefile":
+        save_file()
+
 def change_textbox(textbox, string):
     textbox = get_input_object(textbox)
     textbox.text_object.input_string = string
     textbox.text_object.cursor_position = len(string)
     textbox.text_object.update([])
+
+def save_file():
+    file_path = filedialog.asksaveasfilename(title = "Select file", filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
+    pygame.image.save(STARFIELDSURF, file_path + ".jpg")
+
+

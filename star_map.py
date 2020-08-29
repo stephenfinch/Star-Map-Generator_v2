@@ -16,8 +16,11 @@ class Map:
         self.Xcenter = self.Ycenter = self.field_x / 2 + self.field_buffer
 
     ### given an (x,y) point it will return True/False if the point is in the circle drawn
-    def is_in_circle(self, x, y):
-        return (x - self.Xcenter) ** 2 + (y - self.Ycenter) ** 2 <= self.r ** 2
+    def is_in_circle(self, x, y, is_box=False):
+        if is_box:
+            pass
+        else:
+            return (x - self.Xcenter) ** 2 + (y - self.Ycenter) ** 2 <= self.r ** 2
 
 
     def coerce_to_center(self, x, y):
@@ -65,20 +68,15 @@ class Map:
                 pass
         else:
 
-        #    # do something else for this part
             for i in range(settings.number_of_constellations):
                 
                 constellation_pick = random.randint(0, len(OTHER_CONSTELLATIONS) - 1)
-                temp_other_constellation = Random_Constellation(self.constellation_size, (400,400), settings, orientation=random.randint(0,3), is_inverted=random.randint(0,1))
-                temp_other_constellation.grid_points.append(OTHER_CONSTELLATIONS.get(constellation_pick)[0])
-                temp_other_constellation.grid_lines.append(OTHER_CONSTELLATIONS.get(constellation_pick)[1])
-                '''
-                new_constellation = test_random_constellations()
-                print(new_constellation)
-                temp_other_constellation = Random_Constellation(self.constellation_size, (400,400), settings, orientation=0, is_inverted=0)
-                temp_other_constellation.grid_points.append(new_constellation[0])
-                temp_other_constellation.grid_lines.append(new_constellation[1])
-                '''
+                x, y = random.randint(self.field_buffer, self.field_buffer + self.field_x), random.randint(self.field_buffer, self.field_buffer + self.field_y)
+                if is_in_circle(x,y) and no_overlap(x,y)
+                    temp_other_constellation = Random_Constellation(self.constellation_size, (400,400), settings, orientation=random.randint(0,3), is_inverted=random.randint(0,1))
+                    temp_other_constellation.grid_points.append(OTHER_CONSTELLATIONS.get(constellation_pick)[0])
+                    temp_other_constellation.grid_lines.append(OTHER_CONSTELLATIONS.get(constellation_pick)[1])
+
                 self.list_of_constellations.append(temp_other_constellation)
 
 

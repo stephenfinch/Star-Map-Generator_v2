@@ -40,7 +40,8 @@ main_button_list = [
     Button(action="reset", text="Generate", text_active="Generating", color=(127, 127, 127), area=((1, 1), (198, 75)), border_size=2),
     Button(action="settings", text="Settings", color=(127, 127, 127), area=((1, 674), (198, 75)), border_size=2),
     Button(action="textSizeUp", text="+", color=(127, 127, 127), area=((75, 280), (50, 50)), border_size=2),
-    Button(action="textSizeDown", text="-", color=(127, 127, 127), area=((75, 390), (50, 50)), border_size=2)
+    Button(action="textSizeDown", text="-", color=(127, 127, 127), area=((75, 390), (50, 50)), border_size=2),
+    Button(action="savefile", text="Save Image", color=(127, 127, 127), area=((1, 598), (198, 75)), border_size=2)
 ]
 
 #button --> [show constellations]
@@ -81,7 +82,7 @@ main_label_list = [
     Label(text = "Input Text:", font_size = 32, pos = (25, 85)),
     Label(text = "Text Position:", font_size = 32, pos = (15, 165)),
     Label(text = "    x         y", font_size = 32, pos = (19, 195)),
-    Label(text = "Text Size", font_size = 32, pos = (40, 340))
+    Label(text = "Constellation Size:", font_size = 32, pos = (40, 340))
 ]
 
 settings_label_list = [
@@ -222,8 +223,8 @@ def load_inputs(settings):
     get_input_object("backgroundcolor").color = settings.back_color
     get_input_object("backgroundcolor").color_active = settings.back_color
     set_input("starcount", str(settings.number_of_stars))
-    set_input("textPosX", "0")
-    set_input("textPosY", "0")
+    set_input("textPosX", str(settings.text_location[0]))
+    set_input("textPosY", str(settings.text_location[1]))
 
 def initialize_view(new_starfield, settings):
     #settings_show = False

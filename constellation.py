@@ -56,7 +56,9 @@ class Constellation():
         grid_to_star_points()
         grid_to_star_lines()
         for star in self.star_points:
+            # if is_in_circle
             pygame.draw.circle(main_surface, star.color, (star.x, star.y), star.size, 0)
+            # else: coerce
         for line in self.star_lines:
             pygame.draw.lines(main_surface, settings.star_color, False, line, 1)
 

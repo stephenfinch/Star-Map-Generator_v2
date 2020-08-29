@@ -64,8 +64,12 @@ while True:
                             starfield_changed = True
                     if entry[0] == "Textbox":
                         if settings_show:
+                            for textbox in settings_textbox_list:
+                                textbox.active = False
                             settings_textbox_list[entry[3]].active = True
                         else:
+                            for textbox in main_textbox_list:
+                                textbox.active = False
                             main_textbox_list[entry[3]].active = True
                         display_changed = True
                         textbox_clicked = True

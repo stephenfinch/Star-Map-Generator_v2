@@ -1,8 +1,8 @@
 
 ### BUGS ###
-text box input can happen all at once
-add negative 3 digit nums to the text location x and y input text boxes
-lots of random constellations are buggy ish
+text box input can happen all at once - done
+add negative 3 digit nums to the text location x and y input text boxes - done
+
 
 
 
@@ -13,9 +13,8 @@ fill map with constellations but not on top of text
 merge branch
 
 --- WANT TO DO ---
-
 constellations density needs to do a thing
-
+lots of random constellations are buggy ish
 
 --- LIKE TO DO ---
 add fun easter eggs!! idk what but yeah cool
