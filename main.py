@@ -106,7 +106,7 @@ while True:
             if textbox.active:
                 if textbox.text_object.update(events):
                     perform_action(textbox.action, settings_data)
-                    if textbox.action == "reset" or action == "textPosX" or action == "textPosY":
+                    if textbox.action == "reset" or textbox.action == "textString" or textbox.action == "textPosX" or textbox.action == "textPosY":
                         starfield_changed = True
                     textbox.active = False
                 display_changed = True
@@ -115,7 +115,7 @@ while True:
             if textbox.active:
                 if textbox.text_object.update(events):
                     perform_action(textbox.action, settings_data)
-                    if textbox.action == "reset" or action == "textPosX" or action == "textPosY":
+                    if textbox.action == "reset" or textbox.action == "textString" or textbox.action == "textPosX" or textbox.action == "textPosY":
                         starfield_changed = True
                     textbox.active = False
                 display_changed = True

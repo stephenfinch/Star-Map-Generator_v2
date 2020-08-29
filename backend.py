@@ -7,7 +7,7 @@ root = tk.Tk()
 root.withdraw()
 
 def perform_action(action, settings):
-    if action == "reset":
+    if action == "reset" or action == "textString":
         perform_action("rewrite", settings)
         make_stars(settings)
     elif action == "settings":

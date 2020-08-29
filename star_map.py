@@ -16,11 +16,8 @@ class Map:
         self.Xcenter = self.Ycenter = self.field_x / 2 + self.field_buffer
 
     ### given an (x,y) point it will return True/False if the point is in the circle drawn
-    def is_in_circle(self, x, y, is_box=False):
-        if is_box:
-            pass
-        else:
-            return (x - self.Xcenter) ** 2 + (y - self.Ycenter) ** 2 <= self.r ** 2
+    def is_in_circle(self, x, y):
+        return (x - self.Xcenter) ** 2 + (y - self.Ycenter) ** 2 <= self.r ** 2
 
 
     def coerce_to_center(self, x, y):
@@ -31,19 +28,23 @@ class Map:
             return (0, 0)
 
     def no_overlap(self, x, y, settings):
-        X1L =  x - (settings.text_size / 2)
-        X1R =  x + (settings.text_size / 2)
-        Y1U =  y - (settings.text_size / 2)
-        Y1D =  y + (settings.text_size / 2)
+        buffer = 10
+        X1L =  x - (settings.text_size / 2) - buffer
+        X1R =  x + (settings.text_size / 2) + buffer
+        Y1U =  y - (settings.text_size / 2) - buffer
+        Y1D =  y + (settings.text_size / 2) + buffer
         for constellation in self.list_of_constellations:
             centerX, centerY = constellation.center[0], constellation.center[1]
-            X2L =  centerX - (settings.text_size / 2)
-            X2R =  centerX + (settings.text_size / 2)
-            Y2U =  centerY - (settings.text_size / 2)
-            Y2D =  centerY + (settings.text_size / 2)
-            if ((X1L < X2R and X1L > X2L) or (X1R < X2R and X1R > X2L)) and ((Y1U < Y2D and Y1U > Y2U) or (Y1D < Y2D and Y1D > Y2U)):
+            X2L =  centerX - (settings.text_size / 2) - buffer
+            X2R =  centerX + (settings.text_size / 2) + buffer
+            Y2U =  centerY - (settings.text_size / 2) - buffer
+            Y2D =  centerY + (settings.text_size / 2) + buffer
+            if X1L < X2R and X1R > X2L and Y1U < Y2D and Y1D > Y2U:
                 return False
             '''
+            if ((X1L < X2R and X1L > X2L) or (X1R < X2R and X1R > X2L)) and ((Y1U < Y2D and Y1U > Y2U) or (Y1D < Y2D and Y1D > Y2U)):
+                return False
+            
             if abs(centerX - x) < settings.text_size * 2 and abs(centerY - y) < settings.text_size * 2:
                 return False
             '''

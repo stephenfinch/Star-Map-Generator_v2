@@ -12,6 +12,7 @@ import math
 field_x, field_y = 650, 650
 options_width = 200
 field_buffer = 50
+field_inner_buffer = 5
 screen_x, screen_y = field_x + options_width + 2 * field_buffer, field_y + 2 * field_buffer
 field_point = (int(screen_x - field_x - 2 * field_buffer), int((screen_y - field_y - 2 * field_buffer) / 2))
 DISPLAYSURF = pygame.display.set_mode((screen_x, screen_y), 0, 32)                                          #Main Display
@@ -269,6 +270,10 @@ def draw_view():
 ### Constellation objects have a .draw() method that can be used to draw them
 def draw_constellations(settings):
     star_map.place_constellations(settings.text_size, settings)
+    C = field_x / 2 + field_buffer
+    R = field_x / 2
+    B = field_inner_buffer
     for constellation in star_map.list_of_constellations:
-        constellation.draw(STARFIELDSURF, settings)
+        constellation.draw(STARFIELDSURF, settings, C, R, B)
+    pygame.draw.circle(STARFIELDSURF, GRAY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 1)
 

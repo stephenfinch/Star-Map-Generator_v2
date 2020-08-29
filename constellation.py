@@ -15,7 +15,7 @@ class Constellation():
         self.point_dict = {}
 
     ### This function can draw the constellation using its own data (self)
-    def draw(self, main_surface, settings):
+    def draw(self, main_surface, settings, center, radius, buffer):
 
         ### This function will add some noise to the location of the stars in each constellation
         def shift_points(input):
@@ -52,15 +52,44 @@ class Constellation():
                     offsetY2 = self.point_dict[pair[1]][1]
                     self.star_lines.append(((self.center[0] + offsetX1, self.center[1] + offsetY1), (self.center[0] + offsetX2, self.center[1] + offsetY2)))
 
+        def is_in_circle(self, x, y, center, radius):
+            return (x - center) ** 2 + (y - center) ** 2 <= radius ** 2
+
         ### Run all the methods and draw it all
         grid_to_star_points()
         grid_to_star_lines()
         for star in self.star_points:
-            # if is_in_circle
-            pygame.draw.circle(main_surface, star.color, (star.x, star.y), star.size, 0)
-            # else: coerce the point, make it black, make it small
+            if is_in_circle(self, star.x, star.y, center, radius - buffer):
+                pygame.draw.circle(main_surface, star.color, (star.x, star.y), star.size, 0)
         for line in self.star_lines:
-            pygame.draw.lines(main_surface, settings.star_color, False, line, 1)
+            p1 = is_in_circle(self, line[0][0], line[0][1], center, radius - buffer)
+            p2 = is_in_circle(self, line[1][0], line[1][1], center, radius - buffer)
+            if p1 and p2:
+                pygame.draw.lines(main_surface, settings.star_color, False, line, 1)
+            elif not p1 == p2:
+                #following calculations derived from https://stackoverflow.com/a/59582674
+                (p1x, p1y), (p2x, p2y), (cx, cy) = line[0], line[1], (center, center)
+                (x1, y1), (x2, y2) = (p1x - cx, p1y - cy), (p2x - cx, p2y - cy)
+                dx, dy = (x2 - x1), (y2 - y1)
+                dr = (dx ** 2 + dy ** 2)**.5
+                big_d = x1 * y2 - x2 * y1
+                discriminant = (radius - 1) ** 2 * dr ** 2 - big_d ** 2
+                if discriminant > 0:
+                    intersections = [
+                        (cx + (big_d * dy + sign * (-1 if dy < 0 else 1) * dx * discriminant**.5) / dr ** 2,
+                        cy + (-big_d * dx + sign * abs(dy) * discriminant**.5) / dr ** 2)
+                        for sign in ((1, -1) if dy < 0 else (-1, 1))]
+                    fraction_along_segment = [(xi - p1x) / dx if abs(dx) > abs(dy) else (yi - p1y) / dy for xi, yi in intersections]
+                    intersections = [pt for pt, frac in zip(intersections, fraction_along_segment) if 0 <= frac <= 1]
+                    if not len(intersections) == 0:
+                        intersections = intersections[0]
+                        print(intersections)
+                        if p1 and not p2:
+                            pygame.draw.lines(main_surface, settings.star_color, False, (line[0],(int(intersections[0]),int(intersections[1]))), 1)
+                            print("1")
+                        else:
+                            pygame.draw.lines(main_surface, settings.star_color, False, (line[1],(int(intersections[0]),int(intersections[1]))), 1)
+                            print("2")
 
 
 
@@ -118,10 +147,10 @@ class Random_Constellation(Constellation):
         self.grid_lines = new_grid_lines
         
 
-    def draw(self, main_surface, settings):
+    def draw(self, main_surface, settings, center, radius, buffer):
         if self.is_inverted:
             self.invert()
         if self.orientation != 0:
             self.change_orientation(self.orientation)
-        super().draw(main_surface, settings)
+        super().draw(main_surface, settings, center, radius, buffer)
 
