@@ -65,7 +65,7 @@ class TextInput:
         self.cursor_surface = pygame.Surface((int(self.font_size / 20 + 1), self.font_size))
         self.cursor_surface.fill(cursor_color)
         self.cursor_position = len(initial_string)  # Inside text
-        self.cursor_visible = True  # Switches every self.cursor_switch_ms ms
+        self.cursor_visible = False  # Switches every self.cursor_switch_ms ms
         self.cursor_switch_ms = 500  # /|\
         self.cursor_ms_counter = 0
 
@@ -74,12 +74,15 @@ class TextInput:
     def update(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
+                '''
                 self.cursor_visible = True  # So the user sees where he writes
-
+                '''
+                '''
                 # If none exist, create counter for that key:
                 if event.key not in self.keyrepeat_counters:
-                    self.keyrepeat_counters[event.key] = [0, event.unicode]
-
+                    if not (event.key == pl.K_RETURN or event.key == 271):
+                        self.keyrepeat_counters[event.key] = [0, event.unicode]
+                '''
                 if event.key == pl.K_BACKSPACE:
                     self.input_string = (
                         self.input_string[:max(self.cursor_position - 1, 0)]
@@ -94,7 +97,7 @@ class TextInput:
                         + self.input_string[self.cursor_position + 1:]
                     )
 
-                elif event.key == pl.K_RETURN:
+                elif event.key == pl.K_RETURN or event.key == 271:
                     return True
 
                 elif event.key == pl.K_RIGHT:
@@ -119,7 +122,7 @@ class TextInput:
                         + self.input_string[self.cursor_position:]
                     )
                     self.cursor_position += len(event.unicode)  # Some are empty, e.g. K_UP
-
+            '''
             elif event.type == pl.KEYUP:
                 # *** Because KEYUP doesn't include event.unicode, this dict is stored in such a weird way
                 if event.key in self.keyrepeat_counters:
@@ -138,10 +141,10 @@ class TextInput:
 
                 event_key, event_unicode = key, self.keyrepeat_counters[key][1]
                 pygame.event.post(pygame.event.Event(pl.KEYDOWN, key=event_key, unicode=event_unicode))
-
+            '''
         # Re-render text surface:
         self.surface = self.font_object.render(self.input_string, self.antialias, self.text_color)
-
+        '''
         # Update self.cursor_visible
         self.cursor_ms_counter += self.clock.get_time()
         if self.cursor_ms_counter >= self.cursor_switch_ms:
@@ -154,7 +157,7 @@ class TextInput:
             if self.cursor_position > 0:
                 cursor_y_pos -= self.cursor_surface.get_width()
             self.surface.blit(self.cursor_surface, (cursor_y_pos, 0))
-
+        '''
         self.clock.tick()
         return False
 

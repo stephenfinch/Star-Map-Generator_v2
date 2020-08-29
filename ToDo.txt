@@ -1,31 +1,22 @@
->>> main.py <<<
----
 
->>> map.py <<<
----handles starfield instances
----imports star.py, constellation.py
-
->>> star.py <<<
----Star atributes / functions
----smart sizes
----no stars on the edge (bigger buffer)
-
->>> constellation.py <<<
----handles constellation
+### BUGS ###
+image save box goes to back
+cancel save is bad - done
+leading zeros should not be a thing for the x y text box - done
 
 
 
+--- NEED TO DO ---
+fill map with constellations but not on top of text
+make the constellations overlap the edge of the cirlce
+constellations density GUI needs to talk to settings/backend
+backend needs to calulate number_of_constellations using density and size data
+
+merge branch
 
 
+--- WANT TO DO ---
+lots of random constellations are buggy ish
 
-Things we want to add:
-  -Options for users
-    Starfield color
-    Background color
-    Star colors
-    -Main constellation
-      Text
-      Location
-      Star colors
-    Extra constellations
-
+--- LIKE TO DO ---
+add fun easter eggs!! idk what but yeah cool
