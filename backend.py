@@ -69,13 +69,13 @@ def perform_action(action, settings):
                 strX += char
         if not strX:
             strX = "0"
-        change_textbox("textPosX", strX)
+        change_textbox("textPosX", str(int(strX)))
         if abs(int(strX)) > 999:
             if int(strX) < 0:
                 strX = "-999"
             else:
                 strX = "999"
-        change_textbox("textPosX", strX)
+        change_textbox("textPosX", str(int(strX)))
         strY = ""
         posY = query_input("textPosY")
         for char in posY:
@@ -83,13 +83,13 @@ def perform_action(action, settings):
                 strY += char
         if not strY:
             strY = "0"
-        change_textbox("textPosY", strY)
+        change_textbox("textPosY", str(int(strY)))
         if abs(int(strY)) > 999:
             if int(strY) < 0:
                 strY = "-999"
             else:
                 strY = "999"
-        change_textbox("textPosY", strY)
+        change_textbox("textPosY", str(int(strY)))
         settings.text_location = star_map.coerce_to_center(int(strX),int(strY))
     elif action == "savefile":
         save_file()
@@ -102,6 +102,7 @@ def change_textbox(textbox, string):
 
 def save_file():
     file_path = filedialog.asksaveasfilename(title = "Select file", filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
-    pygame.image.save(STARFIELDSURF, file_path + ".jpg")
+    if file_path:
+        pygame.image.save(STARFIELDSURF, file_path + ".jpg")
 
 

@@ -58,7 +58,7 @@ class Constellation():
         for star in self.star_points:
             # if is_in_circle
             pygame.draw.circle(main_surface, star.color, (star.x, star.y), star.size, 0)
-            # else: coerce
+            # else: coerce the point, make it black, make it small
         for line in self.star_lines:
             pygame.draw.lines(main_surface, settings.star_color, False, line, 1)
 

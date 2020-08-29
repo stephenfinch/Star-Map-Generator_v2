@@ -30,6 +30,24 @@ class Map:
         else:
             return (0, 0)
 
+    def no_overlap(self, x, y, settings):
+        X1L =  x - (settings.text_size / 2)
+        X1R =  x + (settings.text_size / 2)
+        Y1U =  y - (settings.text_size / 2)
+        Y1D =  y + (settings.text_size / 2)
+        for constellation in self.list_of_constellations:
+            centerX, centerY = constellation.center[0], constellation.center[1]
+            X2L =  centerX - (settings.text_size / 2)
+            X2R =  centerX + (settings.text_size / 2)
+            Y2U =  centerY - (settings.text_size / 2)
+            Y2D =  centerY + (settings.text_size / 2)
+            if ((X1L < X2R and X1L > X2L) or (X1R < X2R and X1R > X2L)) and ((Y1U < Y2D and Y1U > Y2U) or (Y1D < Y2D and Y1D > Y2U)):
+                return False
+            '''
+            if abs(centerX - x) < settings.text_size * 2 and abs(centerY - y) < settings.text_size * 2:
+                return False
+            '''
+        return True
 
 
 ## STARS ## makes a list of Star objects and adds them to a list
@@ -49,35 +67,34 @@ class Map:
     def place_constellations(self, constellation_size, settings):
         self.constellation_size = constellation_size #side length of the 5x5 grid
         self.list_of_constellations = []
-        if settings.text_input:
-            
-            ### adds the point/line data for that letter to the list of constellations
-            string_length = len(settings.text_input.upper())
-            string_index = 0
-            self.letter_spacing = constellation_size // 4
-            for char in settings.text_input.upper():
-                temp_letter_constellation = Constellation(self.constellation_size, (200,200), settings)
-                temp_letter_constellation.grid_points.append(LETTER_CONSTELLATIONS.get(char)[0])
-                temp_letter_constellation.grid_lines.append(LETTER_CONSTELLATIONS.get(char)[1])
-                centerX = (self.constellation_size + self.letter_spacing) * (string_index - (string_length - 1) / 2) + self.Xcenter + settings.text_location[0]
-                centerY = self.Ycenter - settings.text_location[1]
-                temp_letter_constellation.center = (centerX, centerY)
-                string_index += 1
-                self.list_of_constellations.append(temp_letter_constellation)
-            if settings.show_constellations:
-                pass
-        else:
-
-            for i in range(settings.number_of_constellations):
-                
+        
+        ### adds the point/line data for that letter to the list of constellations
+        string_length = len(settings.text_input.upper())
+        string_index = 0
+        self.letter_spacing = constellation_size // 4
+        for char in settings.text_input.upper():
+            centerX = (self.constellation_size + self.letter_spacing) * (string_index - (string_length - 1) / 2) + self.Xcenter + settings.text_location[0]
+            centerY = self.Ycenter - settings.text_location[1]
+            temp_letter_constellation = Constellation(self.constellation_size, (centerX, centerY), settings)
+            temp_letter_constellation.grid_points.append(LETTER_CONSTELLATIONS.get(char)[0])
+            temp_letter_constellation.grid_lines.append(LETTER_CONSTELLATIONS.get(char)[1])
+            string_index += 1
+            self.list_of_constellations.append(temp_letter_constellation)
+        
+        ### creates and adds point/line data for each random constellations
+        if settings.show_constellations:
+            constellations_placed, failed_tries = 0, 0
+            while constellations_placed < settings.number_of_constellations and failed_tries < 1000:
                 constellation_pick = random.randint(0, len(OTHER_CONSTELLATIONS) - 1)
                 x, y = random.randint(self.field_buffer, self.field_buffer + self.field_x), random.randint(self.field_buffer, self.field_buffer + self.field_y)
-                if is_in_circle(x,y) and no_overlap(x,y)
-                    temp_other_constellation = Random_Constellation(self.constellation_size, (400,400), settings, orientation=random.randint(0,3), is_inverted=random.randint(0,1))
+                if self.is_in_circle(x, y) and self.no_overlap(x, y, settings):
+                    temp_other_constellation = Random_Constellation(self.constellation_size, (x,y), settings, orientation=random.randint(0,3), is_inverted=random.randint(0,1))
                     temp_other_constellation.grid_points.append(OTHER_CONSTELLATIONS.get(constellation_pick)[0])
                     temp_other_constellation.grid_lines.append(OTHER_CONSTELLATIONS.get(constellation_pick)[1])
-
-                self.list_of_constellations.append(temp_other_constellation)
+                    self.list_of_constellations.append(temp_other_constellation)
+                    constellations_placed += 1
+                else:
+                    failed_tries += 1
 
 
 LETTER_CONSTELLATIONS = {

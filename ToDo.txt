@@ -1,19 +1,21 @@
 
 ### BUGS ###
-text box input can happen all at once - done
-add negative 3 digit nums to the text location x and y input text boxes - done
-
+image save box goes to back
+cancel save is bad - done
+leading zeros should not be a thing for the x y text box - done
 
 
 
 --- NEED TO DO ---
-save image to file!!
 fill map with constellations but not on top of text
+make the constellations overlap the edge of the cirlce
+constellations density GUI needs to talk to settings/backend
+backend needs to calulate number_of_constellations using density and size data
 
 merge branch
 
+
 --- WANT TO DO ---
-constellations density needs to do a thing
 lots of random constellations are buggy ish
 
 --- LIKE TO DO ---
