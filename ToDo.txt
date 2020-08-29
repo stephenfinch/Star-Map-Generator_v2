@@ -1,18 +1,18 @@
 
 ### BUGS ###
 image save box goes to back
-cancel save is bad - done
-leading zeros should not be a thing for the x y text box - done
 
 
 
 --- NEED TO DO ---
-fill map with constellations but not on top of text
-make the constellations overlap the edge of the cirlce
-constellations density GUI needs to talk to settings/backend
+fill map with constellations but not on top of text - started
+make the constellations overlap the edge of the circle
+constellations density on the settings page needs to talk to settings.py/backend.py
 backend needs to calulate number_of_constellations using density and size data
 
-merge branch
+merge branch - done
+
+make it shippable
 
 
 --- WANT TO DO ---
@@ -20,3 +20,5 @@ lots of random constellations are buggy ish
 
 --- LIKE TO DO ---
 add fun easter eggs!! idk what but yeah cool
+beta testers (haha chris you are in for some fun)
+
