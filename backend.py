@@ -114,23 +114,7 @@ def change_textbox(textbox, string):
 
 def save_file(settings):
     #pygame.display.iconify()
-    '''
-    pygame.display.set_mode((0,0), pygame.NOFRAME, 32) 
-    pygame.display.update()
-    root.deiconify()
-    root.lift()
-    root.focus_force()
-    '''
     file_path = filedialog.asksaveasfilename(parent=root,title = "Select file", filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
-    '''
-    field_x, field_y = 650, 650
-    options_width = 200
-    field_buffer = 50
-    field_inner_buffer = 5
-    screen_x, screen_y = field_x + options_width + 2 * field_buffer, field_y + 2 * field_buffer
-    DISPLAYSURF = pygame.display.set_mode((screen_x, screen_y), 0, 32)
-    pygame.display.update()
-    '''
     if file_path:
         pygame.image.save(settings.starfield, file_path + ".jpg")
 
