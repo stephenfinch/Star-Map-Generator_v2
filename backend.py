@@ -1,5 +1,5 @@
-import pygame
-from draw import make_stars, swap_settings, query_input, get_input_object, star_map, STARFIELDSURF
+import pygame, math
+from draw import make_stars, swap_settings, query_input, get_input_object, star_map, load_inputs
 import tkinter as tk
 from tkinter import filedialog
 
@@ -53,9 +53,11 @@ def perform_action(action, settings):
             get_input_object("showconstellations").display_text_color = (63, 63, 63)
     elif action == "textSizeUp":
         settings.text_size = min((settings.text_size + 5), settings.max_constellation_size)
+        perform_action("constellation_density", settings)
         perform_action("rewrite", settings)
     elif action == "textSizeDown":
         settings.text_size = max((settings.text_size - 5), settings.min_constellation_size)
+        perform_action("constellation_density", settings)
         perform_action("rewrite", settings)
     elif action == "rewrite":
         temp_string = query_input("textString")
@@ -98,9 +100,11 @@ def perform_action(action, settings):
         change_textbox("textPosY", str(int(strY)))
         settings.text_location = star_map.coerce_to_center(int(strX),int(strY))
     elif action == "savefile":
-        save_file()
+        save_file(settings)
     elif action == "constellation_density":
-        settings.constellation_density = query_input("constellation_density")
+        settings.number_of_constellations = int((40/3 - (settings.text_size/12)) * (query_input("constellation_density") + 1))
+    elif action == "reset_default":
+        load_inputs(settings)
 
 def change_textbox(textbox, string):
     textbox = get_input_object(textbox)
@@ -108,7 +112,7 @@ def change_textbox(textbox, string):
     textbox.text_object.cursor_position = len(string)
     textbox.text_object.update([])
 
-def save_file():
+def save_file(settings):
     #pygame.display.iconify()
     '''
     pygame.display.set_mode((0,0), pygame.NOFRAME, 32) 
@@ -128,6 +132,6 @@ def save_file():
     pygame.display.update()
     '''
     if file_path:
-        pygame.image.save(STARFIELDSURF, file_path + ".jpg")
+        pygame.image.save(settings.starfield, file_path + ".jpg")
 
 

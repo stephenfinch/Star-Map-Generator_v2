@@ -15,7 +15,7 @@ class Constellation():
         self.point_dict = {}
 
     ### This function can draw the constellation using its own data (self)
-    def draw(self, main_surface, settings, center, radius, buffer):
+    def draw(self, main_surface, settings, center, radius):
 
         ### This function will add some noise to the location of the stars in each constellation
         def shift_points(input):
@@ -36,16 +36,10 @@ class Constellation():
                     self.star_points.append(temp_star)
                     self.point_dict.update({point:(offsetX, offsetY)})
 
-        ### rework this later!
+        ### 
         def grid_to_star_lines():
             for list_of_lines in self.grid_lines:
                 for pair in list_of_lines:
-                    '''
-                    tempx1 = (pair[0] - 1) % 5
-                    tempy1 = (pair[0] - tempx1 - 1) // 5
-                    tempx2 = (pair[1] - 1) % 5
-                    tempy2 = (pair[1] - tempx2 - 1) // 5
-                    '''
                     offsetX1 = self.point_dict[pair[0]][0]
                     offsetY1 = self.point_dict[pair[0]][1]
                     offsetX2 = self.point_dict[pair[1]][0]
@@ -59,11 +53,11 @@ class Constellation():
         grid_to_star_points()
         grid_to_star_lines()
         for star in self.star_points:
-            if is_in_circle(self, star.x, star.y, center, radius - buffer):
+            if is_in_circle(self, star.x, star.y, center, radius - 2):
                 pygame.draw.circle(main_surface, star.color, (star.x, star.y), star.size, 0)
         for line in self.star_lines:
-            p1 = is_in_circle(self, line[0][0], line[0][1], center, radius - buffer)
-            p2 = is_in_circle(self, line[1][0], line[1][1], center, radius - buffer)
+            p1 = is_in_circle(self, line[0][0], line[0][1], center, radius)
+            p2 = is_in_circle(self, line[1][0], line[1][1], center, radius)
             if p1 and p2:
                 pygame.draw.lines(main_surface, settings.star_color, False, line, 1)
             elif not p1 == p2:
@@ -144,10 +138,10 @@ class Random_Constellation(Constellation):
         self.grid_lines = new_grid_lines
         
 
-    def draw(self, main_surface, settings, center, radius, buffer):
+    def draw(self, main_surface, settings, center, radius):
         if self.is_inverted:
             self.invert()
         if self.orientation != 0:
             self.change_orientation(self.orientation)
-        super().draw(main_surface, settings, center, radius, buffer)
+        super().draw(main_surface, settings, center, radius)
 

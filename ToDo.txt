@@ -5,20 +5,22 @@ image save box goes to back
 
 
 --- NEED TO DO ---
-fill map with constellations but not on top of text - started
-make the constellations overlap the edge of the circle
-constellations density on the settings page needs to talk to settings.py/backend.py
-backend needs to calulate number_of_constellations using density and size data
 
-merge branch - done
-
-make it shippable
+make it shippable, make into .exe
 
 
 --- WANT TO DO ---
-lots of random constellations are buggy ish
+add default settings button - done
 
 --- LIKE TO DO ---
 add fun easter eggs!! idk what but yeah cool
 beta testers (haha chris you are in for some fun)
 
+
+
+Finshed List:
+settings defaults
+random constellation size
+constellations density is good
+constellations overlap edge of circle
+random constellations are not buggy

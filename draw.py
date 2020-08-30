@@ -52,7 +52,8 @@ settings_button_list = [
     Button(action="starcolor", text="", color=(127, 127, 127), area=((850, 20), (60, 60)), border_size=2),
     Button(action="backgroundcolor", text="", color=(127, 127, 127), area=((850, 90), (60, 60)), border_size=2),
     Button(action="showgrid", text="Show Grid", color=(127, 127, 127), area=((100, 450), (198, 75)), border_size=2),
-    Button(action="showconstellations", text="Show Constellations", color=(127, 127, 127), area=((500, 450), (300, 75)), border_size=2)
+    Button(action="showconstellations", text="Show Constellations", color=(127, 127, 127), area=((500, 450), (300, 75)), border_size=2),
+    Button(action="reset_default", text="Defaults", color=(127, 127, 127), area=((651, 674), (198, 75)), border_size=2)
 ]
 
 
@@ -211,15 +212,13 @@ def set_input(var, new_value):
         settings_slider_list[control[1]].update(new_value)
 
 def load_inputs(settings):
+    settings.reset()
     set_input("textString", settings.text_input)
     set_input("R", settings.star_color[0])
     set_input("G", settings.star_color[1])
     set_input("B", settings.star_color[2])
-    color_r = query_input("R")
-    color_g = query_input("G")
-    color_b = query_input("B")
-    get_input_object("colorbox").color = (color_r, color_g, color_b)
-    get_input_object("colorbox").color_active = (color_r, color_g, color_b)
+    get_input_object("colorbox").color = settings.star_color
+    get_input_object("colorbox").color_active = settings.star_color
     get_input_object("starcolor").color = settings.star_color
     get_input_object("starcolor").color_active = settings.star_color
     get_input_object("backgroundcolor").color = settings.back_color
@@ -261,11 +260,12 @@ def initialize_view(new_starfield, settings):
         for label in main_label_list:
             label.draw(OPTIONSURF)
 
-def draw_view():
+def draw_view(settings):
     if settings_show:
         DISPLAYSURF.blit(SETTINGSURF, (0, 0))
     else:
         DISPLAYSURF.blit(STARFIELDSURF, field_point)
+        settings.starfield = STARFIELDSURF
         DISPLAYSURF.blit(OPTIONSURF, (0, 0))
 
 ### Constellation objects have a .draw() method that can be used to draw them
@@ -273,8 +273,7 @@ def draw_constellations(settings):
     star_map.place_constellations(settings.text_size, settings)
     C = field_x / 2 + field_buffer
     R = field_x / 2
-    B = field_inner_buffer
     for constellation in star_map.list_of_constellations:
-        constellation.draw(STARFIELDSURF, settings, C, R, B)
+        constellation.draw(STARFIELDSURF, settings, C, R)
     pygame.draw.circle(STARFIELDSURF, GRAY, (int(field_x / 2 + field_buffer), int(field_y / 2 + field_buffer)), int(field_x / 2), 1)
 

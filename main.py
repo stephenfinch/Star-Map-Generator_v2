@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, math
 from settings import *
 from draw import *
 from backend import *
@@ -127,7 +127,7 @@ while True:
         action_list = []
         display_changed = False
         starfield_changed = False
-        draw_view()
+        draw_view(settings_data)
     
     pygame.display.update()
     clock.tick(25)
