@@ -83,14 +83,15 @@ main_label_list = [
     Label(text = "Input Text:", font_size = 32, pos = (25, 85)),
     Label(text = "Text Position:", font_size = 32, pos = (15, 165)),
     Label(text = "    x         y", font_size = 32, pos = (19, 195)),
-    Label(text = "Constellation Size:", font_size = 32, pos = (40, 340))
+    Label(text = "Size:", font_size = 32, pos = (68, 340))
 ]
 
 settings_label_list = [
     Label(text = ">>>       Use for Stars       >>>", font_size = 24, pos = (530, 35)),
     Label(text = ">>> Use for Background >>>", font_size = 24, pos = (530, 105)),
-    Label(text = "Number of Stars", font_size = 24, pos = (100, 260)),
-    Label(text = "Constellation Density", font_size = 24, pos = (500, 260))
+    Label(text = "(click box to set color)", font_size = 14, pos = (813, 155)),
+    Label(text = "Number of Stars:", font_size = 24, pos = (100, 260)),
+    Label(text = "Constellation Density:", font_size = 24, pos = (500, 260))
 ]
 
 def define_main_interactions():

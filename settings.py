@@ -4,7 +4,7 @@ class Settings:
         #Main display
         self.text_input = '' #"Welcome"             #text box (maybe add numbers later)
         self.text_size = 35                      #slider
-        self.text_location = (100, 70)             #four buttons (arrows -- move the center)
+        self.text_location = (0, 0)             #four buttons (arrows -- move the center)
 
         #Options display
         self.show_constellations = True         #button --> turn on/off constellations

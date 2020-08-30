@@ -5,6 +5,8 @@ from tkinter import filedialog
 
 root = tk.Tk()
 root.withdraw()
+root.overrideredirect(True)
+root.geometry('0x0+0+0')
 
 def perform_action(action, settings):
     if action == "reset" or action == "textString":
@@ -45,6 +47,10 @@ def perform_action(action, settings):
             get_input_object("showgrid").display_text_color = (63, 63, 63)
     elif action == "showconstellations":
         settings.show_constellations = not settings.show_constellations
+        if settings.show_constellations:
+            get_input_object("showconstellations").display_text_color = (0, 0, 0)
+        else:
+            get_input_object("showconstellations").display_text_color = (63, 63, 63)
     elif action == "textSizeUp":
         settings.text_size = min((settings.text_size + 5), settings.max_constellation_size)
         perform_action("rewrite", settings)
@@ -70,11 +76,11 @@ def perform_action(action, settings):
         if not strX:
             strX = "0"
         change_textbox("textPosX", str(int(strX)))
-        if abs(int(strX)) > 999:
+        if abs(int(strX)) > 100:
             if int(strX) < 0:
-                strX = "-999"
+                strX = "-100"
             else:
-                strX = "999"
+                strX = "100"
         change_textbox("textPosX", str(int(strX)))
         strY = ""
         posY = query_input("textPosY")
@@ -84,15 +90,17 @@ def perform_action(action, settings):
         if not strY:
             strY = "0"
         change_textbox("textPosY", str(int(strY)))
-        if abs(int(strY)) > 999:
+        if abs(int(strY)) > 100:
             if int(strY) < 0:
-                strY = "-999"
+                strY = "-100"
             else:
-                strY = "999"
+                strY = "100"
         change_textbox("textPosY", str(int(strY)))
         settings.text_location = star_map.coerce_to_center(int(strX),int(strY))
     elif action == "savefile":
         save_file()
+    elif action == "constellation_density":
+        settings.constellation_density = query_input("constellation_density")
 
 def change_textbox(textbox, string):
     textbox = get_input_object(textbox)
@@ -101,7 +109,24 @@ def change_textbox(textbox, string):
     textbox.text_object.update([])
 
 def save_file():
-    file_path = filedialog.asksaveasfilename(title = "Select file", filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
+    #pygame.display.iconify()
+    '''
+    pygame.display.set_mode((0,0), pygame.NOFRAME, 32) 
+    pygame.display.update()
+    root.deiconify()
+    root.lift()
+    root.focus_force()
+    '''
+    file_path = filedialog.asksaveasfilename(parent=root,title = "Select file", filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
+    '''
+    field_x, field_y = 650, 650
+    options_width = 200
+    field_buffer = 50
+    field_inner_buffer = 5
+    screen_x, screen_y = field_x + options_width + 2 * field_buffer, field_y + 2 * field_buffer
+    DISPLAYSURF = pygame.display.set_mode((screen_x, screen_y), 0, 32)
+    pygame.display.update()
+    '''
     if file_path:
         pygame.image.save(STARFIELDSURF, file_path + ".jpg")
 

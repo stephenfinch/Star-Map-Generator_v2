@@ -83,13 +83,10 @@ class Constellation():
                     intersections = [pt for pt, frac in zip(intersections, fraction_along_segment) if 0 <= frac <= 1]
                     if not len(intersections) == 0:
                         intersections = intersections[0]
-                        print(intersections)
                         if p1 and not p2:
                             pygame.draw.lines(main_surface, settings.star_color, False, (line[0],(int(intersections[0]),int(intersections[1]))), 1)
-                            print("1")
                         else:
                             pygame.draw.lines(main_surface, settings.star_color, False, (line[1],(int(intersections[0]),int(intersections[1]))), 1)
-                            print("2")
 
 
 
