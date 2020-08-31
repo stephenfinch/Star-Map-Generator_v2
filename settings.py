@@ -7,7 +7,7 @@ class Settings:
         self.text_location = (0, 45)             #x and y text box input (int only)
 
         #Options display
-        self.show_constellations = False         #button --> turn on/off constellations
+        self.show_constellations = True         #button --> turn on/off constellations
         self.show_grid = True                   #button --> turn on/off grid
         self.number_of_constellations = 8       #((PI * r^2) // self.text_size^2) * (self.constellation_density + 1)
         self.number_of_stars = 5000             #text box (int only)
